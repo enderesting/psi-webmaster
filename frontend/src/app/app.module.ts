@@ -7,11 +7,13 @@ import { SiteListComponent } from './site-list/site-list.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { WebsiteComponent } from './website/website.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SiteListComponent
+    SiteListComponent,
+    WebsiteComponent
   ],
   imports: [
     BrowserModule,
