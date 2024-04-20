@@ -21,6 +21,10 @@ exports.getWebsites = asyncHandler(async (req, res, next) => {
 })
 
 exports.addWebsite = asyncHandler(async (req, res, next) => {
-    res.json({message: "Not implemented"});
+    const websiteURL = req.body.websiteURL;
+    const website = new Website({ websiteURL: websiteURL })
+
+    await website.save();
+    res.status(201).json({ id: website._id });
 })
 
