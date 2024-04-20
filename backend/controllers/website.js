@@ -26,7 +26,7 @@ exports.getWebsite = asyncHandler(async (req, res, next) => {
     resWebsite.ratingStatus = dbWebsite.ratingStatus;
     resWebsite.moniteredPages = resPages;
 
-    res.json(resWebsite);
+    res.status(200).json(resWebsite);
 })
 
 exports.addPage = asyncHandler(async (req, res, next) => {

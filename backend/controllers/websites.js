@@ -17,7 +17,7 @@ exports.getWebsites = asyncHandler(async (req, res, next) => {
         resWebsites.push(resWebsite);
     }
 
-    res.json(resWebsites);
+    res.status(200).json(resWebsites);
 })
 
 exports.addWebsite = asyncHandler(async (req, res, next) => {
