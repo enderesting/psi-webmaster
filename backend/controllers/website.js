@@ -30,7 +30,14 @@ exports.getWebsite = asyncHandler(async (req, res, next) => {
 })
 
 exports.addPage = asyncHandler(async (req, res, next) => {
-    res.json({message: "Not implemented"});
+    const website = await Website.findById(req.params.id).exec();
+    const page = new Page({
+        website: website,
+        pageURL: req.body.pageURL
+    });
+
+    await page.save();
+    res.status(201).json({ id: page._id });
 })
 
 
