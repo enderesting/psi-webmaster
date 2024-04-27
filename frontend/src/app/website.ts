@@ -2,7 +2,7 @@ export interface Website {
     _id: string;
     websiteURL: string;
     addedDate: Date;
-    lastDate: Date;
+    lastEvalDate: Date;
     ratingStatus: RatingStatus;
     moniteredPages: Page[];
 }
@@ -15,6 +15,7 @@ export enum RatingStatus {
 }
 
 export enum RatingResult{
+    NONE = "none",
     COMPLIANT = "compliant",
     NON_COMPLIANT = "non-compliant"
 }
@@ -22,6 +23,6 @@ export enum RatingResult{
 export interface Page {
     _id: string;
     websiteURL: string;
-    lastDate: Date;
+    lastEvalDate: Date;
     ratingResult: RatingResult;
 }
