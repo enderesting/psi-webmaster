@@ -17,7 +17,7 @@ export class SiteListComponent implements AfterViewInit {
   dataSource = new SiteListDataSource();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['websiteURL','addedDate','lastEvalDate','ratingStatus'];
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
