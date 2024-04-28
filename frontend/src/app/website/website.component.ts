@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Website, RatingStatus, RatingResult, Page } from '../website';
 
 @Component({
   selector: 'app-website',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./website.component.css']
 })
 export class WebsiteComponent {
-
+    website!: Website;
 }

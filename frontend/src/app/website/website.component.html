@@ -1,1 +1,21 @@
-<p>website works!</p>
+<mat-list>
+  <mat-list-item>
+    <span matListItemTitle>{{"Site URL"}}</span>
+    <span matListItemLine>{{website.websiteURL}}</span>
+  </mat-list-item>
+  <mat-list-item>
+    <span matListItemTitle>{{"Added"}}</span>
+    <span matListItemLine>{{website.addedDate}}</span>
+  </mat-list-item>
+  <mat-list-item>
+    <span matListItemTitle>{{"Last Evaluation"}}</span>
+    <span matListItemLine>{{website.lastEvalDate}}</span>
+  </mat-list-item>
+  <mat-list-item>
+    <span matListItemTitle>{{"Rating status"}}</span>
+    <span matListItemLine>{{website.ratingStatus}}</span>
+  </mat-list-item>
+</mat-list>
+
+<h1>Monitored Pages</h1>
+<app-page-list></app-page-list>

@@ -12,6 +12,7 @@ import { StatusFilterComponent } from './status-filter/status-filter.component';
 import { CommonModule } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { PageListComponent } from './page-list/page-list.component';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { PageListComponent } from './page-list/page-list.component';
         MatPaginatorModule,
         MatSortModule,
         MatChipsModule,
+        MatListModule,
         StatusFilterComponent,
         CommonModule,
         
