@@ -1,0 +1,30 @@
+<mat-list>
+  <mat-list-item>
+    <span matListItemTitle>{{"Site URL"}}</span>
+    <span matListItemLine>{{website.websiteURL}}</span>
+  </mat-list-item>
+  <mat-list-item>
+    <span matListItemTitle>{{"Added"}}</span>
+    <span matListItemLine>{{website.addedDate}}</span>
+  </mat-list-item>
+  <mat-list-item>
+    <span matListItemTitle>{{"Last Evaluation"}}</span>
+    <span matListItemLine>{{website.lastEvalDate}}</span>
+  </mat-list-item>
+  <mat-list-item>
+    <span matListItemTitle>{{"Rating status"}}</span>
+    <span matListItemLine>{{website.ratingStatus}}</span>
+  </mat-list-item>
+</mat-list>
+
+<div class="submit-page">
+  <form>
+    <mat-form-field>
+      <input matInput placeholder="Enter your URL" [(ngModel)]="input">
+    </mat-form-field>
+    <button mat-flat-button type="submit" color="primary">Submit</button>
+  </form>
+</div>
+
+<h1>Monitored Pages</h1>
+<app-page-list [monitoredPages]="website.moniteredPages"></app-page-list>
