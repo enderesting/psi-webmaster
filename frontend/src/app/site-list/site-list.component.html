@@ -10,10 +10,12 @@
 <mat-chip-listbox
     selectable multiple
     aria-label="Status Filter Selection"
+    (change)="applyFilter($event)"
     >
     <mat-chip-option
         *ngFor="let status of statuses()"
         [value]="status"
+        selected="true"
     >
         {{status}}
     </mat-chip-option>

@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Website, RatingStatus, RatingResult, Page } from '../website';
 import { FormControl } from '@angular/forms';
+import { MatChipListboxChange, MatChipSelectionChange } from '@angular/material/chips';
 
 
 // TODO: replace this with real data from your application
@@ -62,38 +63,30 @@ export class SiteListComponent implements AfterViewInit {
   }
 
   /** Set up filters */
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
   statusFilter = new FormControl('');
   filterValues: any = { //the filter that changes and tracks what data needs to be filtered
     ratingStatus: '',
   }
-  private fieldListener() {
-  this.statusFilter.valueChanges
-    .subscribe(
-      status => {
-        this.filterValues.ratingStatus = status;
-        this.dataSource.filter = JSON.stringify(this.filterValues);
-      }
-    ) // copy this block for other filters
-  }
-  private createFilter(): (site: Website, filter: string) => boolean {
-    let filterFunction = function (site: Website, filter: string): boolean {
-      let searchTerms = JSON.parse(filter);
-
-      return site.ratingStatus.indexOf(searchTerms.status) !== -1;
+  
+  // generate predicate used to filter
+  ngOnInit(): void {
+    this.dataSource.filterPredicate = function (site: Website, filter: string) {
+      const rowRating = site.ratingStatus;
+      const ratings: RatingStatus[] = JSON.parse(filter).ratingStatus;
+      return ratings.some((rating) => RatingStatus[rating as unknown as keyof typeof RatingStatus]===rowRating);
     }
+}
 
-    return filterFunction;
-  }
+  // TODO: one button clear all
   clearFilter() {
     this.statusFilter.setValue('');
   }
+
+  // when any of the buttons are pressed, apply filter once more
+	applyFilter(event: MatChipListboxChange) {
+    this.filterValues.ratingStatus = event.value;
+    this.dataSource.filter = JSON.stringify(this.filterValues);
+    // console.log(event.value);
+    // console.log(this.dataSource.filter);
+	}
 }
