@@ -23,4 +23,8 @@ export class WebsiteComponent {
     this.websiteService.getWebsiteById(id)
       .subscribe(website => this.website = website);
   }
+
+  submit(input : String) {
+    console.log(input);
+  }
 }

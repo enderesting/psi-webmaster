@@ -16,8 +16,6 @@ export class SiteListComponent implements AfterViewInit {
   @ViewChild(MatTable) table!: MatTable<Website>;
   dataSource = new SiteListDataSource();
 
-  input: string = '';
-
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['websiteURL','addedDate','lastEvalDate','ratingStatus'];
 
@@ -25,5 +23,9 @@ export class SiteListComponent implements AfterViewInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
+  }
+
+  submit(input : String) {
+    console.log(input);
   }
 }
