@@ -11,6 +11,7 @@ import { WebsiteService } from '../website.service';
 })
 export class WebsiteComponent {
   website!: Website;
+  input: string = '';
 
   constructor(
     private route: ActivatedRoute,

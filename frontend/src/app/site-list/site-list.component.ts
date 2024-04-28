@@ -16,6 +16,8 @@ export class SiteListComponent implements AfterViewInit {
   @ViewChild(MatTable) table!: MatTable<Website>;
   dataSource = new SiteListDataSource();
 
+  input: string = '';
+
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['websiteURL','addedDate','lastEvalDate','ratingStatus'];
 

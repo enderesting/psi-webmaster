@@ -15,6 +15,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { PageListComponent } from './page-list/page-list.component';
 import { MatListModule } from '@angular/material/list';
 import { AppRoutingModule } from './app-routing.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms'
 
 @NgModule({
     declarations: [
@@ -37,6 +41,10 @@ import { AppRoutingModule } from './app-routing.module';
         CommonModule,
         AppRoutingModule,
         HttpClientModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        FormsModule
     ]
 })
 export class AppModule { }
