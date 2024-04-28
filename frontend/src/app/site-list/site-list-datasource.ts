@@ -20,7 +20,11 @@ const EXAMPLE_SITES: Website[] = [
     moniteredPages:EXAMPLE_PAGES},
   {_id: "2", websiteURL: 'https://www.w3schools.com/', 
     addedDate: TIME_2, lastEvalDate: TIME_3,
-    ratingStatus: RatingStatus.TO_BE_RATED,
+    ratingStatus: RatingStatus.BEING_RATED,
+    moniteredPages:[]},
+  {_id: "3", websiteURL: 'https://maia.crimew.gay/', 
+    addedDate: TIME_2, lastEvalDate: TIME_3,
+    ratingStatus: RatingStatus.RATED,
     moniteredPages:[]},
 ];
 

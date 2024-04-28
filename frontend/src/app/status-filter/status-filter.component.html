@@ -1,0 +1,12 @@
+<mat-chip-set selectable multiple
+    aria-label="Fish selection">
+
+    <mat-chip
+        #chip="matChip"
+        *ngFor="let status of statuses()"
+        [value]="status"
+        (click)="toggleSelection(chip)"
+    >
+        {{status}}
+    </mat-chip>
+  </mat-chip-set>
