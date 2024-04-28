@@ -2,7 +2,6 @@ import { AfterViewInit, Component, ViewChild, Input } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { PageListDataSource } from './page-list-datasource';
 import { Website, RatingStatus, RatingResult, Page } from '../website';
 
 @Component({
