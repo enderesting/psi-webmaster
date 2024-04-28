@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { PageListComponent } from './page-list/page-list.component';
 import { MatListModule } from '@angular/material/list';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,7 @@ import { MatListModule } from '@angular/material/list';
         MatListModule,
         StatusFilterComponent,
         CommonModule,
-        
+        AppRoutingModule
     ]
 })
 export class AppModule { }

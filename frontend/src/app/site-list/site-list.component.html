@@ -4,7 +4,9 @@
     <!-- Name Column -->
     <ng-container matColumnDef="websiteURL">
       <th mat-header-cell *matHeaderCellDef>Site URL</th>
-      <td mat-cell *matCellDef="let row">{{row.websiteURL}}</td>
+      <td mat-cell *matCellDef="let row">
+        <a routerLink="/website/{{row._id}}">{{row.websiteURL}}</a>
+      </td>
     </ng-container>
 
     <!-- added date Column -->
