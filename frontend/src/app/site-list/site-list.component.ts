@@ -25,7 +25,19 @@ export class SiteListComponent implements AfterViewInit {
     this.table.dataSource = this.dataSource;
   }
 
-  submit(input : String) {
-    console.log(input);
+  submit(input: string) {
+    if(input.startsWith("https://") || input.startsWith("http://")) {
+      console.log("enter");
+      var newSite : Website = {
+        _id: '123',
+        websiteURL: input,
+        addedDate: new Date(),
+        lastEvalDate: new Date(),
+        ratingStatus: RatingStatus.TO_BE_RATED,
+        moniteredPages: []
+      };
+      this.dataSource.data.push(newSite);
+      this.dataSource.connect();
+    }
   }
 }
