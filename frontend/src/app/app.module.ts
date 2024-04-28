@@ -11,12 +11,14 @@ import { WebsiteComponent } from './website/website.component';
 import { StatusFilterComponent } from './status-filter/status-filter.component';
 import { CommonModule } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
+import { PageListComponent } from './page-list/page-list.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         SiteListComponent,
         WebsiteComponent,
+        PageListComponent,
     ],
     providers: [],
     bootstrap: [AppComponent],
