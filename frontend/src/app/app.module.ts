@@ -9,7 +9,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { WebsiteComponent } from './website/website.component';
-import { StatusFilterComponent } from './status-filter/status-filter.component';
 import { CommonModule } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { PageListComponent } from './page-list/page-list.component';
@@ -37,7 +36,6 @@ import { FormsModule } from '@angular/forms'
         MatSortModule,
         MatChipsModule,
         MatListModule,
-        StatusFilterComponent,
         CommonModule,
         AppRoutingModule,
         HttpClientModule,
