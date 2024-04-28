@@ -1,3 +1,14 @@
+<mat-chip-listbox selectable multiple
+    aria-label="Fish selection">
+
+    <mat-chip-option
+        *ngFor="let status of statuses()"
+        [value]="status"
+    >
+        {{status}}
+    </mat-chip-option>
+</mat-chip-listbox>
+
 <div class="mat-elevation-z8">
   <table mat-table class="full-width-table" matSort aria-label="Elements">
 

@@ -15,6 +15,13 @@ export class SiteListComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<Website>;
   dataSource = new SiteListDataSource();
+  
+  /** Set up statuses ref for filter */
+  ratingStatus = RatingStatus;
+  statuses():Array<string>{
+    var statuses = Object.keys(this.ratingStatus)
+    return statuses
+  }
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['websiteURL','addedDate','lastEvalDate','ratingStatus'];
