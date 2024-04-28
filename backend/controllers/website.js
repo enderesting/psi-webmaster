@@ -9,6 +9,7 @@ exports.getWebsite = asyncHandler(async (req, res, next) => {
     const resPages = [];
     for (const dbPage of dbPages) {
         const resPage = {};
+        resPage._id = resPage._id;
         resPage.websiteURL = dbWebsite.websiteURL;
         resPage.pageURL = dbPage.pageURL;
         if (dbPage.lastRated != null) resPage.lastRated = dbPage.lastRated;
@@ -18,11 +19,10 @@ exports.getWebsite = asyncHandler(async (req, res, next) => {
     } 
 
     const resWebsite = {};
+    resWebsite._id = dbWebsite._id;
     resWebsite.websiteURL = dbWebsite.websiteURL;
     resWebsite.addedDate = dbWebsite.addedDate;
-    if (dbWebsite.lastRated != null) {
-        resWebsite.lastDate = dbWebsite.lastRated;
-    }
+    if (dbWebsite.lastRated != null) resWebsite.lastDate = dbWebsite.lastRated;
     resWebsite.ratingStatus = dbWebsite.ratingStatus;
     resWebsite.moniteredPages = resPages;
 

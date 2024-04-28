@@ -7,6 +7,7 @@ exports.getWebsites = asyncHandler(async (req, res, next) => {
     const resWebsites = [];
     for (const dbWebsite of dbWebsites) {
         const resWebsite = {};
+        resWebsite._id = dbWebsite._id;
         resWebsite.websiteURL = dbWebsite.websiteURL;
         resWebsite.addedDate = dbWebsite.addedDate;
         if (dbWebsite.lastRated != null) {
