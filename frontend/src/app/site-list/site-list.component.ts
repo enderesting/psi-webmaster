@@ -23,6 +23,8 @@ export class SiteListComponent implements AfterViewInit {
     return statuses
   }
 
+  input: string = '';
+
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['websiteURL','addedDate','lastEvalDate','ratingStatus'];
 

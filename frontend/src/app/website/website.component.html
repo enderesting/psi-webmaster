@@ -17,5 +17,14 @@
   </mat-list-item>
 </mat-list>
 
+<div class="submit-page">
+  <form>
+    <mat-form-field>
+      <input matInput placeholder="Enter your URL" [(ngModel)]="input">
+    </mat-form-field>
+    <button mat-flat-button type="submit" color="primary">Submit</button>
+  </form>
+</div>
+
 <h1>Monitored Pages</h1>
-<app-page-list></app-page-list>
+<app-page-list [monitoredPages]="website.moniteredPages"></app-page-list>
