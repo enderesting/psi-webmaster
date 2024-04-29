@@ -23,4 +23,19 @@ export class WebsiteComponent {
     this.websiteService.getWebsiteById(id)
       .subscribe(website => this.website = website);
   }
+
+  submit(input : string) {
+    if(input.startsWith(this.website.websiteURL)) {
+      var newPage : Page = {
+        _id: '',
+        websiteURL: input,
+        pageURL: input,
+        ratingResult: RatingResult.NONE,
+      };
+      this.websiteService.addPageToWebsite(newPage,this.website._id).subscribe((page: Page) => {
+        newPage._id = page._id;
+        this.website.moniteredPages.push(newPage);
+      });
+    }
+  }
 }

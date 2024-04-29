@@ -21,12 +21,14 @@ export class SiteListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(
-    private webService: WebsiteService,
-    ) {
-    this.dataSource = new MatTableDataSource<Website>(this.websites); //hook to db instead
+  constructor(private webService: WebsiteService) {
+    this.dataSource = new MatTableDataSource<Website>([]);
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
   getWebsites():void{
     this.webService.getWebsites()
@@ -37,11 +39,6 @@ export class SiteListComponent implements AfterViewInit {
         this.dataSource.sort = this.sort;
         // console.log(this.dataSource.data);
       });
-  }
-
-  ngAfterViewInit() {
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
   }
 
   // generate predicate used to filter
@@ -83,4 +80,22 @@ export class SiteListComponent implements AfterViewInit {
     // console.log(event.value);
     // console.log(this.dataSource.filter);
 	}
+
+  submit(input: string) {
+    if(input.startsWith("https://") || input.startsWith("http://")) {
+      var newSite : Website = {
+        _id: '',
+        websiteURL: input,
+        addedDate: new Date(),
+        ratingStatus: RatingStatus.TO_BE_RATED,
+        moniteredPages: []
+      };
+      this.webService.addWebsite(newSite).subscribe((site: Website) => {
+          newSite._id = site._id;
+        });
+      this.dataSource.data.push(newSite);
+      this.dataSource.data = this.dataSource.data;
+      this.dataSource.connect();
+    }
+  }
 }
