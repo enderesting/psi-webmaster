@@ -30,7 +30,6 @@ export class WebsiteComponent {
         _id: '',
         websiteURL: input,
         pageURL: input,
-        lastEvalDate: new Date(),
         ratingResult: RatingResult.NONE,
       };
       this.websiteService.addPageToWebsite(newPage,this.website._id).subscribe((page: Page) => {

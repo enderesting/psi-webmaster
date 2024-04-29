@@ -100,7 +100,6 @@ export class SiteListComponent implements AfterViewInit {
         _id: '',
         websiteURL: input,
         addedDate: new Date(),
-        lastEvalDate: new Date(),
         ratingStatus: RatingStatus.TO_BE_RATED,
         moniteredPages: []
       };
