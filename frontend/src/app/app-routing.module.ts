@@ -5,6 +5,7 @@ import { WebsiteComponent } from './website/website.component';
 import { SiteListComponent } from './site-list/site-list.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/websites', pathMatch: 'full' },
   { path: 'website/:id', component: WebsiteComponent },
   { path: 'websites', component: SiteListComponent },
 ];
