@@ -21,14 +21,14 @@ export class SiteListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private websiteService: WebsiteService) {
+  constructor(private webService: WebsiteService) {
     this.dataSource = new MatTableDataSource<Website>([]);
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    });
+  }
 
   getWebsites():void{
     this.webService.getWebsites()
@@ -90,7 +90,7 @@ export class SiteListComponent implements AfterViewInit {
         ratingStatus: RatingStatus.TO_BE_RATED,
         moniteredPages: []
       };
-      this.websiteService.addWebsite(newSite).subscribe((site: Website) => {
+      this.webService.addWebsite(newSite).subscribe((site: Website) => {
           newSite._id = site._id;
         });
       this.dataSource.data.push(newSite);
