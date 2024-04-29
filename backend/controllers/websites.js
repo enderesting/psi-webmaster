@@ -26,6 +26,13 @@ exports.addWebsite = asyncHandler(async (req, res, next) => {
     const website = new Website({ websiteURL: websiteURL })
 
     await website.save();
-    res.status(201).json({ id: website._id });
+
+    const resWebsite = {};
+    resWebsite._id = website._id;
+    resWebsite.websiteURL = website.websiteURL;
+    resWebsite.addedDate = website.addedDate;
+    resWebsite.ratingStatus = website.ratingStatus;
+
+    res.status(201).json(resWebsite);
 })
 
