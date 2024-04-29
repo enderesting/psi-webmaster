@@ -7,15 +7,29 @@
   </form>
 </div>
 
+<mat-chip-listbox
+    selectable multiple
+    aria-label="Status Filter Selection"
+    (change)="applyFilter($event)"
+    >
+    <mat-chip-option
+        *ngFor="let status of statuses()"
+        [value]="status"
+        selected="true"
+    >
+        {{status}}
+    </mat-chip-option>
+</mat-chip-listbox>
+
 <div class="mat-elevation-z8">
-  <table mat-table class="full-width-table" matSort aria-label="Elements">
+  <table mat-table [dataSource]="dataSource" matSort>
 
     <!-- Name Column -->
     <ng-container matColumnDef="websiteURL">
       <th mat-header-cell *matHeaderCellDef>Site URL</th>
-      <td mat-cell *matCellDef="let row">
+      <td mat-cell *matCellDef="let row"> 
         <a routerLink="/website/{{row._id}}">{{row.websiteURL}}</a>
-      </td>
+        </td>
     </ng-container>
 
     <!-- added date Column -->
