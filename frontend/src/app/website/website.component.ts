@@ -24,7 +24,15 @@ export class WebsiteComponent {
       .subscribe(website => this.website = website);
   }
 
-  submit(input : String) {
-    console.log(input);
+  submit(input : string) {
+    if(input.startsWith(this.website.websiteURL) || input.startsWith(this.website.websiteURL)) {
+      var newPage : Page = {
+        _id: '123', // placeholder
+        websiteURL: input,
+        lastEvalDate: new Date(),
+        ratingResult: RatingResult.NONE,
+      };
+      this.website.moniteredPages.push(newPage);
+    }
   }
 }
