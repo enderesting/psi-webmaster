@@ -23,6 +23,7 @@ export enum RatingResult{
 export interface Page {
     _id: string;
     websiteURL: string;
+    pageURL: string;
     lastEvalDate: Date;
     ratingResult: RatingResult;
 }

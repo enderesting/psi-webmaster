@@ -29,6 +29,7 @@ export class WebsiteComponent {
       var newPage : Page = {
         _id: '',
         websiteURL: input,
+        pageURL: input,
         lastEvalDate: new Date(),
         ratingResult: RatingResult.NONE,
       };
