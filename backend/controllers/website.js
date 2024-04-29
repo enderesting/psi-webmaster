@@ -32,7 +32,7 @@ exports.getWebsite = asyncHandler(async (req, res, next) => {
 exports.addPage = asyncHandler(async (req, res, next) => {
     const website = await Website.findById(req.params.id).exec();
     const page = new Page({
-        website: website,
+        website: website._id,
         pageURL: req.body.pageURL
     });
 
