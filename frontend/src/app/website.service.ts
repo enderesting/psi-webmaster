@@ -27,11 +27,14 @@ export class WebsiteService {
             );
   }
 
-  getWebsites(): Observable<Website[]> {
+  getMockWebsites() : Observable<Website[]>{
     // hopefully we wont need these
-    // const sites = of(EXAMPLE_SITES);
-    // return sites;
-    return this.http.get<Website[]>(this.websiteURL)
+    const sites = of(EXAMPLE_SITES);
+    return sites;
+  }
+  
+  getWebsites(): Observable<Website[]> {
+    return this.http.get<Website[]>(this.websitesURL)
           .pipe(
             catchError(this.handleError<Website[]>('getWebsites'))
             );
