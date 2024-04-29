@@ -37,7 +37,12 @@ exports.addPage = asyncHandler(async (req, res, next) => {
     });
 
     await page.save();
-    res.status(201).json({ id: page._id });
+
+    const resPage = {};
+    resPage._id = page._id;
+    resPage.websiteURL = website.websiteURL;
+
+    res.status(201).json(resPage);
 })
 
 
