@@ -25,7 +25,7 @@ export class WebsiteComponent {
   }
 
   submit(input : string) {
-    if(input.startsWith(this.website.websiteURL) || input.startsWith(this.website.websiteURL)) {
+    if(input.startsWith(this.website.websiteURL)) {
       var newPage : Page = {
         _id: '',
         websiteURL: input,
