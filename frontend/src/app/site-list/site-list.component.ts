@@ -5,31 +5,8 @@ import { MatSort } from '@angular/material/sort';
 import { Website, RatingStatus, RatingResult, Page } from '../website';
 import { FormControl } from '@angular/forms';
 import { MatChipListboxChange, MatChipSelectionChange } from '@angular/material/chips';
-
-
-// TODO: replace this with real data from your application
-const TIME_1 = new Date('December 15, 2024 04:28:00');	
-const TIME_2 = new Date('December 16, 2024 04:28:00');	
-const TIME_3 = new Date('December 17, 2024 04:28:00');	
-const EXAMPLE_PAGES: Page[] = [
-  {_id: "1", websiteURL: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    lastEvalDate: TIME_3, ratingResult: RatingResult.NONE},
-]
-const EXAMPLE_SITES: Website[] = [
-  {_id: "1", websiteURL: 'www.youtube.com', 
-    addedDate: TIME_1, lastEvalDate: TIME_2,
-    ratingStatus: RatingStatus.TO_BE_RATED,
-    moniteredPages:EXAMPLE_PAGES},
-  {_id: "2", websiteURL: 'https://www.w3schools.com/', 
-    addedDate: TIME_2, lastEvalDate: TIME_3,
-    ratingStatus: RatingStatus.BEING_RATED,
-    moniteredPages:[]},
-  {_id: "3", websiteURL: 'https://maia.crimew.gay/', 
-    addedDate: TIME_2, lastEvalDate: TIME_3,
-    ratingStatus: RatingStatus.RATED,
-    moniteredPages:[]},
-];
-
+import { EXAMPLE_SITES } from '../MOCKSITES';
+import { WebsiteService } from '../website.service';
 
 @Component({
   selector: 'app-site-list',
@@ -39,12 +16,19 @@ const EXAMPLE_SITES: Website[] = [
 export class SiteListComponent implements AfterViewInit {
   displayedColumns = ['websiteURL','addedDate','lastEvalDate','ratingStatus'];
   dataSource: MatTableDataSource<Website>;
+  websites: Website[] = []
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor() {
-    this.dataSource = new MatTableDataSource(EXAMPLE_SITES); //hook to db instead
+  constructor(private webService:WebsiteService) {
+    this.dataSource = new MatTableDataSource(this.websites); //hook to db instead
+  }
+
+
+  getWebsites():void{
+    this.webService.getWebsites()
+      .subscribe(sites => this.websites = sites);
   }
 
   ngAfterViewInit() {
@@ -70,6 +54,7 @@ export class SiteListComponent implements AfterViewInit {
   
   // generate predicate used to filter
   ngOnInit(): void {
+    this.getWebsites();
     this.dataSource.filterPredicate = function (site: Website, filter: string) {
       const rowRating = site.ratingStatus;
       const ratings: RatingStatus[] = JSON.parse(filter).ratingStatus;
