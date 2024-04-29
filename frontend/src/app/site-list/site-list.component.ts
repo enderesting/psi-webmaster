@@ -7,7 +7,6 @@ import { FormControl } from '@angular/forms';
 import { MatChipListboxChange, MatChipSelectionChange } from '@angular/material/chips';
 import { EXAMPLE_SITES } from '../MOCKSITES';
 import { WebsiteService } from '../website.service';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'app-site-list',
@@ -22,7 +21,9 @@ export class SiteListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private webService:WebsiteService) {
+  constructor(
+    private webService: WebsiteService,
+    ) {
     this.dataSource = new MatTableDataSource<Website>(this.websites); //hook to db instead
   }
 
