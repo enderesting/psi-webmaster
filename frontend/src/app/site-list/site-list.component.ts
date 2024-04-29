@@ -1,14 +1,15 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Website, RatingStatus, RatingResult, Page } from '../website';
 import { FormControl } from '@angular/forms';
 import { MatChipListboxChange, MatChipSelectionChange } from '@angular/material/chips';
+import { WebsiteService } from '../website.service';
 
 
 // TODO: replace this with real data from your application
-const TIME_1 = new Date('December 15, 2024 04:28:00');	
+/*const TIME_1 = new Date('December 15, 2024 04:28:00');	
 const TIME_2 = new Date('December 16, 2024 04:28:00');	
 const TIME_3 = new Date('December 17, 2024 04:28:00');	
 const EXAMPLE_PAGES: Page[] = [
@@ -28,7 +29,7 @@ const EXAMPLE_SITES: Website[] = [
     addedDate: TIME_2, lastEvalDate: TIME_3,
     ratingStatus: RatingStatus.RATED,
     moniteredPages:[]},
-];
+];*/
 
 
 @Component({
@@ -43,13 +44,16 @@ export class SiteListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor() {
-    this.dataSource = new MatTableDataSource(EXAMPLE_SITES); //hook to db instead
+  constructor(private websiteService: WebsiteService) {
+    this.dataSource = new MatTableDataSource<Website>([]);
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.websiteService.getWebsites().subscribe(data => {
+      this.dataSource.data = data;
+    });
   }
 
   /**URL input */
@@ -92,16 +96,19 @@ export class SiteListComponent implements AfterViewInit {
 
   submit(input: string) {
     if(input.startsWith("https://") || input.startsWith("http://")) {
-      console.log("enter");
       var newSite : Website = {
-        _id: '123',
+        _id: '',
         websiteURL: input,
         addedDate: new Date(),
         lastEvalDate: new Date(),
         ratingStatus: RatingStatus.TO_BE_RATED,
         moniteredPages: []
       };
+      this.websiteService.addWebsite(newSite).subscribe((site: Website) => {
+          newSite._id = site._id;
+        });
       this.dataSource.data.push(newSite);
+      this.dataSource.data = this.dataSource.data;
       this.dataSource.connect();
     }
   }

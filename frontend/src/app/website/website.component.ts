@@ -32,7 +32,10 @@ export class WebsiteComponent {
         lastEvalDate: new Date(),
         ratingResult: RatingResult.NONE,
       };
-      this.website.moniteredPages.push(newPage);
+      this.websiteService.addPageToWebsite(newPage,this.website._id).subscribe((page: Page) => {
+        newPage._id = page._id;
+        this.website.moniteredPages.push(newPage);
+      });
     }
   }
 }
