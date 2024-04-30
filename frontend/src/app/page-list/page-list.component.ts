@@ -21,4 +21,8 @@ export class PageListComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.table.dataSource = this.monitoredPages;
   }
+
+  ngAfterViewChecked(): void {
+    this.table.renderRows();
+  }
 }

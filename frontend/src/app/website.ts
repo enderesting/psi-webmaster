@@ -2,7 +2,7 @@ export interface Website {
     _id: string;
     websiteURL: string;
     addedDate: Date;
-    lastEvalDate: Date;
+    lastEvalDate?: Date;
     ratingStatus: RatingStatus;
     moniteredPages: Page[];
 }
@@ -23,6 +23,7 @@ export enum RatingResult{
 export interface Page {
     _id: string;
     websiteURL: string;
-    lastEvalDate: Date;
+    pageURL: string;
+    lastEvalDate?: Date;
     ratingResult: RatingResult;
 }

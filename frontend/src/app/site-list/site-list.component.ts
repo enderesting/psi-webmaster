@@ -107,6 +107,23 @@ export class SiteListComponent implements AfterViewInit {
     this.dataSource.filter = this.filterValues.ratingStatus;
     // console.log("applfyFilter: " + this.dataSource.filter);
   }
-  
 
+  
+  submit(input: string) {
+    if(input.startsWith("https://") || input.startsWith("http://")) {
+      var newSite : Website = {
+        _id: '',
+        websiteURL: input,
+        addedDate: new Date(),
+        ratingStatus: RatingStatus.TO_BE_RATED,
+        moniteredPages: []
+      };
+      this.webService.addWebsite(newSite).subscribe((site: Website) => {
+          newSite._id = site._id;
+        });
+      this.dataSource.data.push(newSite);
+      this.dataSource.data = this.dataSource.data;
+      this.dataSource.connect();
+    }
+  }
 }

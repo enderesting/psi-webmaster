@@ -1,9 +1,9 @@
 <div class="submit-site">
   <form>
     <mat-form-field>
-      <input matInput placeholder="Enter your URL" [(ngModel)]="input" name="URLInput">
+      <input matInput #input placeholder="Enter your URL">
     </mat-form-field>
-    <button mat-flat-button type="submit" color="primary">Submit</button>
+    <button mat-flat-button color="primary" (click)="submit(input.value)">Submit</button>
   </form>
 </div>
 
