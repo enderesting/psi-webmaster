@@ -4,9 +4,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Website, RatingStatus, RatingResult, Page } from '../website';
 import { FormControl } from '@angular/forms';
-import { MatChipListboxChange, MatChipSelectionChange } from '@angular/material/chips';
+import { MatChipListbox, MatChipListboxChange, MatChipOption, MatChipSelectionChange } from '@angular/material/chips';
 import { EXAMPLE_SITES } from '../MOCKSITES';
 import { WebsiteService } from '../website.service';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-site-list',
@@ -21,15 +22,28 @@ export class SiteListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private webService: WebsiteService) {
-    this.dataSource = new MatTableDataSource<Website>([]);
+  constructor(
+    private webService: WebsiteService,
+    ) {
+    this.dataSource = new MatTableDataSource<Website>(this.websites); //hook to db instead
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
   }
 
+  // generate predicate used to filter
+  ngOnInit(): void {
+    this.filterValues.ratingStatus = ["TO_BE_RATED","BEING_RATED","RATED","ERROR"];
+    this.applyFilter();
+    this.getWebsites();
+  }
+
+  /**URL input */
+  input: string = '';
+
+  /**load in websites */
   getWebsites():void{
     this.webService.getWebsites()
       .subscribe((res: Website[]) => {
@@ -37,22 +51,10 @@ export class SiteListComponent implements AfterViewInit {
         this.dataSource = new MatTableDataSource<Website>(this.websites);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        // console.log(this.dataSource.data);
+        this.dataSource.filterPredicate = this.createFilter();
       });
   }
 
-  // generate predicate used to filter
-  ngOnInit(): void {
-      this.getWebsites();
-        this.dataSource.filterPredicate = function (site: Website, filter: string) {
-        const rowRating = site.ratingStatus;
-        const ratings: RatingStatus[] = JSON.parse(filter).ratingStatus;
-        return ratings.some((rating) => RatingStatus[rating as unknown as keyof typeof RatingStatus]===rowRating);
-      }
-  }
-
-  /**URL input */
-  input: string = '';
 
   /** Set up statuses ref for filter */
   ratingStatus = RatingStatus;
@@ -68,19 +70,45 @@ export class SiteListComponent implements AfterViewInit {
   }
 
 
+  private createFilter(): (site: Website, filter: any) => boolean {
+    let filterFunction = function (site: Website ,filter: string[]): boolean {
+      const rowRating: string = site.ratingStatus.toLocaleLowerCase();
+      const ratings: string[] = filter.map((str) => RatingStatus[str as keyof typeof RatingStatus]);//JSON.parse(filter).ratingStatus;
+      // console.log("row:" + rowRating + "    ratings:" + ratings);
+      return ratings.some((rating) => rating === rowRating);
+    }
+
+    return filterFunction;
+  }
+
+
   // TODO: one button clear all
   clearFilter() {
     this.statusFilter.setValue('');
   }
 
-  // when any of the buttons are pressed, apply filter once more
-	applyFilter(event: MatChipListboxChange) {
-    this.filterValues.ratingStatus = event.value;
-    this.dataSource.filter = JSON.stringify(this.filterValues);
-    // console.log(event.value);
-    // console.log(this.dataSource.filter);
-	}
+  setFilter(event:MatChipListboxChange){
+    var listbox: MatChipOption | MatChipOption[] = event.source.selected;
 
+    let chipOpts : MatChipOption[];
+    if (listbox instanceof MatChipOption){
+      chipOpts = [listbox];
+    }else{
+      chipOpts = listbox;
+    }
+
+    const values : String[] = chipOpts.map((opt) => opt.value);
+    
+    this.filterValues.ratingStatus = values;
+    this.applyFilter();
+  }
+  
+  applyFilter(){
+    this.dataSource.filter = this.filterValues.ratingStatus;
+    // console.log("applfyFilter: " + this.dataSource.filter);
+  }
+
+  
   submit(input: string) {
     if(input.startsWith("https://") || input.startsWith("http://")) {
       var newSite : Website = {

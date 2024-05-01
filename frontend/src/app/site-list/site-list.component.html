@@ -8,18 +8,20 @@
 </div>
 
 <mat-chip-listbox
-    selectable multiple
-    aria-label="Status Filter Selection"
-    (change)="applyFilter($event)"
-    >
-    <mat-chip-option
-        *ngFor="let status of statuses()"
-        [value]="status"
-        selected="true"
-    >
-        {{status}}
-    </mat-chip-option>
+  selectable multiple #list
+  aria-label="Status Filter Selection"
+  (change)="setFilter($event)"
+  >
+  <mat-chip-option
+      *ngFor="let status of statuses()"
+      [value]="status"
+      selected="true"
+  >
+      {{status}}
+  </mat-chip-option>
 </mat-chip-listbox>
+
+
 
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource" matSort>
