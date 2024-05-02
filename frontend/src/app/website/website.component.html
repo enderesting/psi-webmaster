@@ -1,19 +1,19 @@
 <mat-list>
   <mat-list-item>
     <span matListItemTitle>{{"Site URL"}}</span>
-    <span matListItemLine>{{website.websiteURL}}</span>
+    {{website.websiteURL}}
   </mat-list-item>
   <mat-list-item>
     <span matListItemTitle>{{"Added"}}</span>
-    <span matListItemLine>{{website.addedDate}}</span>
+    {{website.addedDate |  date: 'dd/MM/yyyy hh:mm:ss'}}
   </mat-list-item>
   <mat-list-item>
     <span matListItemTitle>{{"Last Evaluation"}}</span>
-    <span matListItemLine>{{website.lastEvalDate}}</span>
+    {{website.lastEvalDate |  date: 'dd/MM/yyyy hh:mm:ss'}}
   </mat-list-item>
   <mat-list-item>
     <span matListItemTitle>{{"Rating status"}}</span>
-    <span matListItemLine>{{website.ratingStatus}}</span>
+    {{website.ratingStatus}}
   </mat-list-item>
 </mat-list>
 
