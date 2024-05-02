@@ -112,7 +112,8 @@
 
 // Be sure that you only ever include this mixin once!
 @include mat.core();
-
+@include mat.legacy-core();
+@include mat.all-legacy-component-typographies();
 // Define your theme with color palettes, typography and density
 
 $mat-theme-primary-palette: map-merge(mat.$amber-palette, ( contrast: (100: #1b0518,)));
@@ -142,11 +143,11 @@ $mat-theme-warn: mat.define-palette(
   $text: A700
 );
 
-$mat-dark-theme-primary-palette: map-merge(mat.$amber-palette, ( contrast: (200: #030844,A100: rgba(0,0,0, 0.87),A700: rgba(0,0,0, 0.87),)));
+$mat-dark-theme-primary-palette: map-merge(mat.$amber-palette, ( contrast: (200: #000000,50: rgba(0,0,0, 0.87),A700: rgba(0,0,0, 0.87), 700: red)));
 $mat-dark-theme-primary: mat.define-palette(
   $mat-dark-theme-primary-palette,
   $default: 200,
-  $lighter: A100,
+  $lighter: 50,
   $darker: A700,
   $text: 700
 );
@@ -189,7 +190,7 @@ $mat-dark-theme: mat.define-dark-theme((
     primary: $mat-dark-theme-primary,
     accent: $mat-dark-theme-accent,
     warn: $mat-dark-theme-warn,
-  )
+  ),
 ));
 
 @include mat.all-component-themes($mat-dark-theme);

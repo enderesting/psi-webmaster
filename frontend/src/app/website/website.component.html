@@ -1,27 +1,34 @@
 <mat-list>
   <mat-list-item>
-    <span matListItemTitle>{{"Site URL"}}</span>
+    <span matListItemTitle style="color:#00BFA5">{{"Site URL"}}</span>
     {{website.websiteURL}}
   </mat-list-item>
   <mat-list-item>
-    <span matListItemTitle>{{"Added"}}</span>
+    <span matListItemTitle style="color:#00BFA5">{{"Added"}}</span>
     {{website.addedDate |  date: 'dd/MM/yyyy hh:mm:ss'}}
   </mat-list-item>
   <mat-list-item>
-    <span matListItemTitle>{{"Last Evaluation"}}</span>
+    <span matListItemTitle style="color:#00BFA5">{{"Last Evaluation"}}</span>
     {{website.lastEvalDate |  date: 'dd/MM/yyyy hh:mm:ss'}}
   </mat-list-item>
   <mat-list-item>
-    <span matListItemTitle>{{"Rating status"}}</span>
+    <span matListItemTitle style="color:#00BFA5">{{"Rating status"}}</span>
     {{website.ratingStatus}}
   </mat-list-item>
 </mat-list>
 
 <div class="submit-page">
   <form>
-    <mat-form-field>
-      <input matInput #input placeholder="Enter your URL">
-    </mat-form-field>
+    <mat-form-field hintLabel="please include website and path." [style.width.px]=500>
+      <input matInput #input
+        placeholder="Enter your URL"
+        [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option [value]=website.websiteURL>
+          {{website.websiteURL}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field><br>
     <button mat-flat-button color="primary" (click)="submit(input.value)">Submit</button>
   </form>
 </div>

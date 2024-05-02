@@ -1,6 +1,6 @@
 <div class="submit-site">
   <form>
-    <mat-form-field>
+    <mat-form-field hintLabel="please include protocol (http://) and exclude path." [style.width.px]=500>
       <input matInput #input placeholder="Enter your URL">
     </mat-form-field>
     <button mat-flat-button color="primary" (click)="submit(input.value)">Submit</button>
@@ -16,6 +16,8 @@
       *ngFor="let status of statuses()"
       [value]="status"
       selected="true"
+      color="accent"
+
   >
       {{status}}
   </mat-chip-option>
