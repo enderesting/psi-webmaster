@@ -23,7 +23,7 @@
       <input matInput #input
         placeholder="Enter your URL"
         [matAutocomplete]="auto">
-      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-autocomplete #auto="matAutocomplete">
         <mat-option [value]=website.websiteURL>
           {{website.websiteURL}}
         </mat-option>
@@ -35,3 +35,9 @@
 
 <h1>Monitored Pages</h1>
 <app-page-list [monitoredPages]="website.moniteredPages"></app-page-list>
+
+<div class="back-button-container">
+  <button mat-fab color="accent" aria-label="Go back button" (click)="goBack()">
+    <mat-icon>keyboard_backspace</mat-icon>
+  </button>
+</div>

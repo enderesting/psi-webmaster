@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +8,8 @@ import { Location } from '@angular/common';
 export class AppComponent {
   title = 'frontend';
   
-  constructor(private location: Location){}
-  
-  goBack(): void {
-    this.location.back();
-  }
+  constructor(){}
+
 }
 
 

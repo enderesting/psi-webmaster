@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Website, RatingStatus, RatingResult, Page } from '../website';
 import { WebsiteService } from '../website.service';
+import { Location } from '@angular/common';
+
 
 
 @Component({
@@ -15,7 +17,8 @@ export class WebsiteComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private websiteService: WebsiteService
+    private websiteService: WebsiteService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -37,5 +40,9 @@ export class WebsiteComponent {
         this.website.moniteredPages.push(newPage);
       });
     }
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }
