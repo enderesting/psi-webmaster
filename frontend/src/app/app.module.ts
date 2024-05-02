@@ -20,6 +20,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatToolbarModule} from '@angular/material/toolbar'; 
+
 
 @NgModule({
     declarations: [
@@ -47,6 +49,7 @@ import {MatDividerModule} from '@angular/material/divider';
         FormsModule,
         MatIconModule,
         MatDividerModule,
+        MatToolbarModule,
         ReactiveFormsModule,
     ]
 })

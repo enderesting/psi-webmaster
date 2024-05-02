@@ -1,9 +1,24 @@
-<h1>{{title}}</h1>
 
-<router-outlet></router-outlet>
+  <mat-toolbar color="primary">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>My App</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>share</mat-icon>
+    </button>
+  </mat-toolbar>
 
-<div class="back-button-container">
+
+<div class="site-content">
+  <router-outlet></router-outlet>
+  <div class="back-button-container">
     <button mat-fab color="accent" aria-label="Go back button" (click)="goBack()">
       <mat-icon>keyboard_backspace</mat-icon>
     </button>
+  </div>
 </div>
