@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Website, RatingStatus, RatingResult, Page } from '../website';
 import { WebsiteService } from '../website.service';
 import { Location } from '@angular/common';
+import { AbstractControl, FormControl, Validators } from '@angular/forms';
 
 
 
@@ -12,9 +13,6 @@ import { Location } from '@angular/common';
   styleUrls: ['./website.component.css']
 })
 export class WebsiteComponent {
-  website!: Website;
-  input: string = '';
-
   constructor(
     private route: ActivatedRoute,
     private websiteService: WebsiteService,
@@ -24,8 +22,18 @@ export class WebsiteComponent {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.websiteService.getWebsiteById(id)
-      .subscribe(website => this.website = website);
+      .subscribe(website => {
+        this.website = website
+        this.websitePattern = `^${this.website.websiteURL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`;
+        console.log(this.websitePattern);
+      });
   }
+
+  website!: Website;
+  input: string = '';
+  websitePattern:string = '';
+  siteFormControl = new FormControl('', [Validators.required]);
+
 
   submit(input : string) {
     if(input.startsWith(this.website.websiteURL)) {
@@ -40,6 +48,10 @@ export class WebsiteComponent {
         this.website.moniteredPages.push(newPage);
       });
     }
+  }
+
+  checkForErrorsIn(formControl: AbstractControl) {
+    throw new Error('Method not implemented.');
   }
 
   goBack(): void {

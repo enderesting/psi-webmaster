@@ -11,7 +11,8 @@ const TIME_1 = new Date('December 15, 2024 04:28:00');
 const TIME_2 = new Date('December 16, 2024 04:28:00');	
 const TIME_3 = new Date('December 17, 2024 04:28:00');	
 const EXAMPLE_PAGES: Page[] = [
-  {_id: "1", websiteURL: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  {_id: "1", websiteURL: "https://www.youtube.com",
+    pageURL:"/watch?v=dQw4w9WgXcQ",
     lastEvalDate: TIME_3, ratingResult: RatingResult.NONE},
 ]
 const EXAMPLE_SITES: Website[] = [
@@ -94,7 +95,7 @@ export class SiteListDataSource extends DataSource<Website> {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
         case 'addedDate': return compare(+a.addedDate, +b.addedDate, isAsc);
-        case 'lastEvalDate': return compare(+a.lastEvalDate, +b.lastEvalDate, isAsc);
+        // case 'lastEvalDate': return compare(+a.lastEvalDate, +b.lastEvalDate, isAsc);
         default: return 0;
       }
     });

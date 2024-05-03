@@ -18,8 +18,10 @@
 </mat-list>
 
 <div class="submit-page">
+  <div>Submit a page.</div>
   <form>
-    <mat-form-field hintLabel="please include website and path." [style.width.px]=500>
+    <mat-form-field [style.width.px]=500>
+      <mat-label>please include website and path.</mat-label>
       <input matInput #input
         placeholder="Enter your URL"
         [matAutocomplete]="auto">
@@ -28,8 +30,20 @@
           {{website.websiteURL}}
         </mat-option>
       </mat-autocomplete>
-    </mat-form-field><br>
-    <button mat-flat-button color="primary" (click)="submit(input.value)">Submit</button>
+      <mat-error *ngIf="siteFormControl.hasError('required')">
+        Page cannot be null.
+      </mat-error>
+      <mat-error *ngIf="siteFormControl.hasError('pattern')">
+        Added URL must include the full website + path.
+      </mat-error>
+    </mat-form-field>
+    <button mat-flat-button color="primary"
+      (click)="submit(input.value)"
+      [style.margin-top.px]=-10
+      [style.margin-bottom.px]=6
+      [style.width.px]=100
+      [style.height.px]=52
+      >Submit</button>
   </form>
 </div>
 
