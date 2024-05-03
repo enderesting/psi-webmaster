@@ -22,7 +22,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatToolbarModule} from '@angular/material/toolbar'; 
 import {MatAutocompleteModule} from '@angular/material/autocomplete'; 
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
     declarations: [
@@ -53,6 +53,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
         MatToolbarModule,
         ReactiveFormsModule,
         MatAutocompleteModule,
+        MatCheckboxModule,
+
     ]
 })
 export class AppModule { }
