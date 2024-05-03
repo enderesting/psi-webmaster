@@ -40,9 +40,30 @@ exports.addPage = asyncHandler(async (req, res, next) => {
 
     const resPage = {};
     resPage._id = page._id;
-    resPage.websiteURL = website.websiteURL;
+    resPage.websiteURL = page.websiteURL;
+    resPage.pageURL = page.pageURL;
 
     res.status(201).json(resPage);
 })
 
+exports.deletePage = asyncHandler(async (req, res, next) => {
+    const id = req.params.id;
 
+    await Page.findByIdAndDelete(id)
+      .then(data => {
+        if (!data) {
+          res.status(404).send({
+            message: `Cannot delete Tutorial with id=${id}.`
+          });
+        } else {
+          res.send({
+            message: "Tutorial was deleted successfully!"
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Could not delete Tutorial with id=" + id
+        });
+      });
+})

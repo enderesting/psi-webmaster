@@ -39,14 +39,15 @@ export class WebsiteComponent {
     if(input.startsWith(this.website.websiteURL)) {
       var newPage : Page = {
         _id: '',
-        websiteURL: input,
+        websiteURL: this.website.websiteURL,
         pageURL: input,
         ratingResult: RatingResult.NONE,
       };
       this.websiteService.addPageToWebsite(newPage,this.website._id).subscribe((page: Page) => {
         newPage._id = page._id;
-        this.website.moniteredPages.push(newPage);
+        console.log(newPage);
       });
+      this.website.moniteredPages.push(newPage);
     }
   }
 

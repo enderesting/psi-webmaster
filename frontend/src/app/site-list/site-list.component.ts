@@ -132,7 +132,6 @@ export class SiteListComponent implements AfterViewInit {
   }
 
   isSite(input:string):boolean{
-    console.log("wep");
     return (input.startsWith("https://") || input.startsWith("http://"));
   }
 }

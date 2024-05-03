@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Website, RatingStatus, RatingResult, Page } from '../website';
 import { SelectionModel } from '@angular/cdk/collections';
+import { WebsiteService } from '../website.service';
 
 @Component({
   selector: 'app-page-list',
@@ -11,6 +12,9 @@ import { SelectionModel } from '@angular/cdk/collections';
   styleUrls: ['./page-list.component.css']
 })
 export class PageListComponent implements AfterViewInit {
+  constructor(
+    private websiteService: WebsiteService,
+  ) {}
   @Input() monitoredPages: Page[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -21,6 +25,9 @@ export class PageListComponent implements AfterViewInit {
   clickedRows = new Set<Page>();
   selection = new SelectionModel<Page>(true, []);
 
+  ngOnInit(): void {
+    
+  }
   ngAfterViewInit(): void {
     this.table.dataSource = this.monitoredPages;
   }
@@ -36,6 +43,8 @@ export class PageListComponent implements AfterViewInit {
   }
 
   deleteSelectedPage(page:Page):void{
+    this.websiteService.deletePageFromWebsite(page);
+    console.log(page._id);
     console.log("delete:" + page.pageURL);
   }
 
