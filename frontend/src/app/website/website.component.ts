@@ -25,7 +25,8 @@ export class WebsiteComponent {
       .subscribe(website => {
         this.website = website
         this.websitePattern = `^${this.website.websiteURL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`;
-        console.log(this.websitePattern);
+        // console.log(this.websitePattern);
+        console.log("ngOnInit: " + website.moniteredPages[0]._id + " "+ website.moniteredPages[0].pageURL);
       });
   }
 
@@ -60,9 +61,9 @@ export class WebsiteComponent {
 
   deleteSelectedPage(page:Page):void{
     const index = this.website.moniteredPages.indexOf(page);
-    this.websiteService.deletePageFromWebsite(page);
-    console.log("delete:" + page.pageURL);
-    this.website.moniteredPages.splice(index);
+    this.websiteService.deletePageFromWebsite(page).subscribe(() => {
+      this.website.moniteredPages.splice(index);
+    });
   }
 
 

@@ -53,7 +53,7 @@ export class WebsiteService {
   /* dw about this until sprint 2 */
   deletePageFromWebsite(page:Page): Observable<Page>{
     const url = `${this.pageURL}/${page._id}`;
-    console.log(url);
+    console.log("delete: " + url);
     return this.http.delete<Page>(url,this.httpOptions)
             .pipe(
               catchError(this.handleError<Page>(`deletePage id=${page._id}`))

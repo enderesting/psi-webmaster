@@ -36,11 +36,11 @@ export class PageListComponent implements OnChanges {
     console.log("ngAfterViewChecked");
     //ref: https://angular.io/errors/NG0100
     // setTimeout(() =>{ //running async -> not reccommended
-      this.table.renderRows();
+    this.table.renderRows();
     // },0);
     this.cdr.detectChanges(); //manually trigger change detection
   }
-  
+
   ngOnChanges(changes: SimpleChanges) {
     console.log("ngOnChanges" + this.monitoredPages);
     this.table.dataSource = this.monitoredPages;
@@ -50,6 +50,7 @@ export class PageListComponent implements OnChanges {
   deleteSelected(){
     this.emitSelected.emit(this.selection.selected);
     //emitting selection for website to handle
+    this.selection.clear();
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
