@@ -48,7 +48,9 @@
 </div>
 
 <h1>Monitored Pages</h1>
-<app-page-list [monitoredPages]="website.moniteredPages"></app-page-list>
+<app-page-list
+  [monitoredPages]="website.moniteredPages"
+  (emitSelected)="deleteSelected($event)"></app-page-list>
 
 <div class="back-button-container">
   <button mat-fab color="accent" aria-label="Go back button" (click)="goBack()">

@@ -12,6 +12,7 @@ export class WebsiteService {
   
   private websiteURL = 'api/website';
   private websitesURL = 'api/websites';
+  private pageURL = 'api/page';
 
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -51,7 +52,7 @@ export class WebsiteService {
 
   /* dw about this until sprint 2 */
   deletePageFromWebsite(page:Page): Observable<Page>{
-    const url = `${this.websiteURL}/page/${page._id}`;
+    const url = `${this.pageURL}/${page._id}`;
     console.log(url);
     return this.http.delete<Page>(url,this.httpOptions)
             .pipe(

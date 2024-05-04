@@ -45,11 +45,26 @@ export class WebsiteComponent {
       };
       this.websiteService.addPageToWebsite(newPage,this.website._id).subscribe((page: Page) => {
         newPage._id = page._id;
-        console.log(newPage);
       });
-      this.website.moniteredPages.push(newPage);
+      console.log(this.website.moniteredPages);
+      this.website.moniteredPages.push(newPage); // if this isnt pushed, its not triggered
     }
   }
+
+  //called by emiter
+  deleteSelected(selection:Page[]):void{
+    for (const eachPage of selection){
+      this.deleteSelectedPage(eachPage);
+    }
+  }
+
+  deleteSelectedPage(page:Page):void{
+    const index = this.website.moniteredPages.indexOf(page);
+    this.websiteService.deletePageFromWebsite(page);
+    console.log("delete:" + page.pageURL);
+    this.website.moniteredPages.splice(index);
+  }
+
 
   checkForErrorsIn(formControl: AbstractControl) {
     throw new Error('Method not implemented.');
