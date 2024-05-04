@@ -33,18 +33,18 @@ export class PageListComponent implements OnChanges {
   }
 
   ngAfterViewChecked():void{
-    console.log("ngAfterViewChecked");
+    // console.log("ngAfterViewChecked");
     //ref: https://angular.io/errors/NG0100
-    // setTimeout(() =>{ //running async -> not reccommended
+    setTimeout(() =>{ //running async -> not reccommended
     this.table.renderRows();
-    // },0);
-    this.cdr.detectChanges(); //manually trigger change detection
+    },0);
+    // this.cdr.detectChanges(); //manually trigger change detection
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log("ngOnChanges" + this.monitoredPages);
+    // console.log("ngOnChanges" + this.monitoredPages);
     this.table.dataSource = this.monitoredPages;
-    console.log(changes);
+    // console.log(changes);
   }
   
   deleteSelected(){
