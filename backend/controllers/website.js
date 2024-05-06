@@ -9,12 +9,11 @@ exports.getWebsite = asyncHandler(async (req, res, next) => {
     const resPages = [];
     for (const dbPage of dbPages) {
         const resPage = {};
-        resPage._id = resPage._id;
+        resPage._id = dbPage._id;
         resPage.websiteURL = dbWebsite.websiteURL;
         resPage.pageURL = dbPage.pageURL;
         if (dbPage.lastRated != null) resPage.lastRated = dbPage.lastRated;
         if (dbPage.rating != null) resPage.rating = dbPage.rating;
-
         resPages.push(resPage);
     } 
 
@@ -40,9 +39,31 @@ exports.addPage = asyncHandler(async (req, res, next) => {
 
     const resPage = {};
     resPage._id = page._id;
-    resPage.websiteURL = website.websiteURL;
+    resPage.websiteURL = page.websiteURL;
+    resPage.pageURL = page.pageURL;
 
     res.status(201).json(resPage);
 })
 
+exports.deletePage = asyncHandler(async (req, res, next) => {
+    const id = req.params.id;
 
+    await Page.findByIdAndDelete(id)
+      .then(data => {
+        if (!data) {
+          res.status(404).json({
+            message: `Cannot delete Tutorial with id=${id}.`
+          });
+        } else {
+          res.json({
+            message: "Tutorial was deleted successfully!"
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).json({
+          message: "Could not delete Tutorial with id=" + id
+        });
+      });
+    console.log("what? this is not supposed to happen");
+})

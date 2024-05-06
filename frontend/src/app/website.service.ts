@@ -12,6 +12,7 @@ export class WebsiteService {
   
   private websiteURL = 'api/website';
   private websitesURL = 'api/websites';
+  private pageURL = 'api/page';
 
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -44,15 +45,20 @@ export class WebsiteService {
     return this.http.post<Website>(this.websitesURL, website, this.httpOptions);
   }
 
-  addPageToWebsite(page: Page, websiteId: string) {
+  addPageToWebsite(page: Page, websiteId: string):Observable<Page>{
     const url = `${this.websiteURL}/${websiteId}`;
     return this.http.post<Page>(url, page, this.httpOptions);
   }
 
   /* dw about this until sprint 2 */
-  deleteWebsite(){}
-
-  deletePageToWebsite(){}
+  deletePageFromWebsite(page:Page): Observable<Page>{
+    const url = `${this.pageURL}/${page._id}`;
+    // console.log("delete: " + url);
+    return this.http.delete<Page>(url,this.httpOptions)
+            .pipe(
+              catchError(this.handleError<Page>(`deletePage id=${page._id}`))
+            );
+  }
 
 
   /** error handling */

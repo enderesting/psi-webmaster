@@ -5,8 +5,8 @@ const TIME_1 = new Date('December 15, 2024 04:28:00');
 const TIME_2 = new Date('December 16, 2024 04:28:00');	
 const TIME_3 = new Date('December 17, 2024 04:28:00');	
 const EXAMPLE_PAGES: Page[] = [
-  {_id: "1", websiteURL: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    pageURL: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  {_id: "1", websiteURL: "https://www.youtube.com",
+    pageURL: "/watch?v=dQw4w9WgXcQ",
     lastEvalDate: TIME_3, ratingResult: RatingResult.NONE},
 ]
 export const EXAMPLE_SITES: Website[] = [

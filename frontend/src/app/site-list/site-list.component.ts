@@ -3,7 +3,7 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Website, RatingStatus, RatingResult, Page } from '../website';
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatChipListbox, MatChipListboxChange, MatChipOption, MatChipSelectionChange } from '@angular/material/chips';
 import { EXAMPLE_SITES } from '../MOCKSITES';
 import { WebsiteService } from '../website.service';
@@ -18,7 +18,11 @@ export class SiteListComponent implements AfterViewInit {
   displayedColumns = ['websiteURL','addedDate','lastEvalDate','ratingStatus'];
   dataSource: MatTableDataSource<Website>;
   websites: Website[] = []
+  
+  websitePattern = "^(http|https|ftp|smtp):\/\/[^\/]+\/?$"
+  siteFormControl = new FormControl('', [Validators.required, Validators.pattern(this.websitePattern)]);
 
+  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -110,7 +114,7 @@ export class SiteListComponent implements AfterViewInit {
 
   
   submit(input: string) {
-    if(input.startsWith("https://") || input.startsWith("http://")) {
+    if(this.isSite(input)) {
       var newSite : Website = {
         _id: '',
         websiteURL: input,
@@ -125,5 +129,9 @@ export class SiteListComponent implements AfterViewInit {
       this.dataSource.data = this.dataSource.data;
       this.dataSource.connect();
     }
+  }
+
+  isSite(input:string):boolean{
+    return (input.startsWith("https://") || input.startsWith("http://"));
   }
 }

@@ -20,6 +20,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatToolbarModule} from '@angular/material/toolbar'; 
+import {MatAutocompleteModule} from '@angular/material/autocomplete'; 
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTabsModule} from '@angular/material/tabs';
+import { WebsiteAnalysisComponent } from './website-analysis/website-analysis.component';
 
 @NgModule({
     declarations: [
@@ -27,6 +32,7 @@ import {MatDividerModule} from '@angular/material/divider';
         SiteListComponent,
         WebsiteComponent,
         PageListComponent,
+        WebsiteAnalysisComponent,
     ],
     providers: [],
     bootstrap: [AppComponent],
@@ -47,7 +53,12 @@ import {MatDividerModule} from '@angular/material/divider';
         FormsModule,
         MatIconModule,
         MatDividerModule,
+        MatToolbarModule,
         ReactiveFormsModule,
+        MatAutocompleteModule,
+        MatCheckboxModule,
+        MatTabsModule,
+
     ]
 })
 export class AppModule { }

@@ -36,3 +36,8 @@ exports.addWebsite = asyncHandler(async (req, res, next) => {
     res.status(201).json(resWebsite);
 })
 
+exports.deleteWebsite = asyncHandler(async (req, res, next) => {
+    //TODO
+})
+
+

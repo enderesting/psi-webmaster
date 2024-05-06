@@ -1,9 +1,31 @@
 <div class="submit-site">
+  <div>Submit your website.</div>
   <form>
-    <mat-form-field>
-      <input matInput #input placeholder="Enter your URL">
+    <mat-form-field
+      [style.width.px]=500
+      >
+      <mat-label>please include protocol (http://) and exclude path.</mat-label>
+      <input matInput #input
+        placeholder="e.g. http://www.google.com"
+        [formControl]="siteFormControl" 
+        type="text"
+        >
+      <mat-error *ngIf="siteFormControl.hasError('required')">
+        Website cannot be null.
+      </mat-error>
+      <mat-error *ngIf="siteFormControl.hasError('pattern')">
+        Website is not formatted correctly.
+      </mat-error>
     </mat-form-field>
-    <button mat-flat-button color="primary" (click)="submit(input.value)">Submit</button>
+    <!-- <br> -->
+    <button mat-flat-button
+      color="primary"
+      (click)="submit(input.value)"
+      [style.margin-top.px]=-10
+      [style.margin-bottom.px]=6
+      [style.width.px]=100
+      [style.height.px]=52
+      >Submit</button>
   </form>
 </div>
 
@@ -16,6 +38,8 @@
       *ngFor="let status of statuses()"
       [value]="status"
       selected="true"
+      color="accent"
+
   >
       {{status}}
   </mat-chip-option>
