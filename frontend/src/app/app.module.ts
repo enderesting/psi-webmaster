@@ -23,6 +23,8 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatToolbarModule} from '@angular/material/toolbar'; 
 import {MatAutocompleteModule} from '@angular/material/autocomplete'; 
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTabsModule} from '@angular/material/tabs';
+import { WebsiteAnalysisComponent } from './website-analysis/website-analysis.component';
 
 @NgModule({
     declarations: [
@@ -30,6 +32,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
         SiteListComponent,
         WebsiteComponent,
         PageListComponent,
+        WebsiteAnalysisComponent,
     ],
     providers: [],
     bootstrap: [AppComponent],
@@ -54,6 +57,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
         ReactiveFormsModule,
         MatAutocompleteModule,
         MatCheckboxModule,
+        MatTabsModule,
 
     ]
 })
