@@ -25,6 +25,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTabsModule} from '@angular/material/tabs';
 import { WebsiteAnalysisComponent } from './website-analysis/website-analysis.component';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 @NgModule({
     declarations: [
@@ -58,7 +59,7 @@ import { WebsiteAnalysisComponent } from './website-analysis/website-analysis.co
         MatAutocompleteModule,
         MatCheckboxModule,
         MatTabsModule,
-
+        NgApexchartsModule,
     ]
 })
 export class AppModule { }
