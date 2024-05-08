@@ -26,6 +26,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTabsModule} from '@angular/material/tabs';
 import { WebsiteAnalysisComponent } from './website-analysis/website-analysis.component';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { ChartInfoComponent } from './chart-info/chart-info.component';
 
 @NgModule({
     declarations: [
@@ -34,6 +35,7 @@ import { NgApexchartsModule } from "ng-apexcharts";
         WebsiteComponent,
         PageListComponent,
         WebsiteAnalysisComponent,
+        ChartInfoComponent,
     ],
     providers: [],
     bootstrap: [AppComponent],
