@@ -1,5 +1,4 @@
 const {QualWeb} = require('@qualweb/core');
-const Page = require('./models/page');
 const fs = require('fs')
 
 const clusterOptions = {
