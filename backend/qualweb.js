@@ -22,11 +22,6 @@ exports.evaluateURLs = async (pageURLs) => {
     return urlAssertions;
 }
 
-exports.scheduledEvaluation = async () => {
-    console.log("Evaluating current set of pages")
-    setTimeout(this.scheduledEvaluation, millisecsToNextRatingBatch);
-}
-
 exports.saveJSONFile = (objToSave, path) => {
     strToWrite = JSON.stringify(objToSave, null, 2)
     fs.writeFile(path, strToWrite, (err) => {
