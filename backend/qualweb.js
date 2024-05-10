@@ -2,7 +2,7 @@ const {QualWeb} = require('@qualweb/core');
 const fs = require('fs')
 
 const clusterOptions = {
-    maxConcurrency: 5,
+    maxConcurrency: 2,
     timeout: 60 * 1000,
     monitor: true
 };
@@ -15,13 +15,18 @@ exports.initQualWeb = async () => {
     await qualWeb.start(clusterOptions);
 }
 
-exports.evaluateURL = async (pageURL) => {
+exports.evaluateURLs = async (pageURLs) => {
     await qualWeb.start(clusterOptions);
-    report = await qualWeb.evaluate({url: pageURL});
+    reports = await qualWeb.evaluate({urls: pageURLs});
     await qualWeb.stop();
 
-    const modules = report[pageURL].modules;
-    this.parseEARLAssertions(modules)
+    urlAssertions = {}
+    for (const url in reports) {
+        urlAssertions[url] = this.parseEARLAssertions(reports[url].modules)
+    }
+    
+    console.log(urlAssertions)
+    return urlAssertions;
 }
 
 exports.scheduledEvaluation = async () => {
