@@ -25,7 +25,6 @@ exports.evaluateURLs = async (pageURLs) => {
         urlAssertions[url] = this.parseEARLAssertions(reports[url].modules)
     }
     
-    console.log(urlAssertions)
     return urlAssertions;
 }
 
