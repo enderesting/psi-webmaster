@@ -22,7 +22,7 @@ exports.evaluateURL = async (pageURL) => {
     await qualWeb.stop();
 
     const modules = report[pageURL].modules;
-    this.cleanReport(modules)
+    this.parseEARLAssertions(modules)
 }
 
 exports.scheduledEvaluation = async () => {
@@ -41,7 +41,7 @@ exports.saveJSONFile = (objToSave, path) => {
     })
 }
 
-exports.cleanReport = (modules) => {
+exports.parseEARLAssertions = (modules) => {
     actRules = modules["act-rules"]["assertions"]
     wcagRules = modules["wcag-techniques"]["assertions"]
     
