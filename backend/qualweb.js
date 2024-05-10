@@ -8,12 +8,6 @@ const clusterOptions = {
 };
 
 const qualWeb = new QualWeb({});
-const pagesToRate = []
-const millisecsToNextRatingBatch = 1000 * 60 * 0.5
-
-exports.initQualWeb = async () => {
-    await qualWeb.start(clusterOptions);
-}
 
 exports.evaluateURLs = async (pageURLs) => {
     await qualWeb.start(clusterOptions);
@@ -31,10 +25,6 @@ exports.evaluateURLs = async (pageURLs) => {
 exports.scheduledEvaluation = async () => {
     console.log("Evaluating current set of pages")
     setTimeout(this.scheduledEvaluation, millisecsToNextRatingBatch);
-}
-
-exports.addPageToBeRated = (pageId) => {
-    pagesToRate.push(pageId)
 }
 
 exports.saveJSONFile = (objToSave, path) => {
