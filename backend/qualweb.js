@@ -64,3 +64,30 @@ exports.parseEARLAssertions = (modules) => {
 
     return cleanedAssertions;
 }
+
+exports.commonNErrors = (n, assertions) => {
+    let errorTypeTotal = 0;
+    const counts = {};
+    for (const assertion of assertions) {
+        const code = assertion.code;
+        if (!counts[code]) {
+            counts[code] = 1;
+            errorTypeTotal++;
+        } else {
+            counts[code] = counts[code] + 1;
+        }
+    }
+
+    const countsEntries = Object.entries(counts);
+    const sortedCountsEntries = countsEntries.toSorted((entry1, entry2) => {
+        return entry2[1] - entry1[1];
+    })
+
+    const properN = errorTypeTotal > n ? n : errorTypeTotal;
+    const commonEntries = sortedCountsEntries.slice(0, properN);
+
+    const commonErrors = []
+    for (const [error, count] of commonEntries) {commonErrors.push(error);}
+
+    return commonErrors;
+}
