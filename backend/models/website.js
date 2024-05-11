@@ -51,6 +51,10 @@ const WebsiteSchema = new Schema({
         type: Number,
         min: 0
     },
+
+    commonErrors: {
+        type: [String]
+    }
 });
 
 // Virtual for this author instance URL.
