@@ -22,6 +22,12 @@ const QWAssertionSchema = new Schema({
 
     level: {
         type: String
+    },
+
+    page: {
+        type: Schema.ObjectId,
+        ref: "Page",
+        required: true
     }
 });
 
