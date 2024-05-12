@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Website, RatingStatus, RatingResult, Page } from '../website';
+import { Website, RatingStatus, RatingResult, Page, ErrorElement} from '../website';
 import { WebsiteService } from '../website.service';
 import { Location } from '@angular/common';
 import { AbstractControl, FormControl, Validators } from '@angular/forms';
@@ -25,7 +25,10 @@ export class WebsiteComponent {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.websiteService.getWebsiteById(id)
       .subscribe(website => {
-        this.website = website
+        this.website = website;
+        this.stats = this.calculateStats();
+        this.errorData = this.calculateError();
+        console.log(this.website.commonErrors);
         this.websitePattern = `^${this.website.websiteURL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`;
         // console.log(this.websitePattern);
         // console.log("ngOnInit: " + website.moniteredPages[0]._id + " "+ website.moniteredPages[0].pageURL);
@@ -36,6 +39,9 @@ export class WebsiteComponent {
   input: string = '';
   websitePattern:string = '';
   siteFormControl = new FormControl('', [Validators.required]);
+  stats: number[] = [0,0,0,0]
+
+  errorData: ErrorElement[] = []
 
 
   submit(input : string) {
@@ -49,7 +55,6 @@ export class WebsiteComponent {
       this.websiteService.addPageToWebsite(newPage,this.website._id).subscribe((page: Page) => {
         newPage._id = page._id;
       });
-      console.log(this.website.moniteredPages);
       this.website.moniteredPages.push(newPage); // if this isnt pushed, its not triggered
     }
   }
@@ -57,11 +62,20 @@ export class WebsiteComponent {
   delete() {
     if(this.website.moniteredPages.length > 0) {
       const dialogRef = this.dialog.open(DialogComponent);
-      dialogRef.afterClosed().subscribe(() => {
-        this.deleteSelected(this.website.moniteredPages);
+      dialogRef.afterClosed().subscribe((result) => {
+        if(result === 'ok'){
+          this.deleteSelected(this.website.moniteredPages);
+          this.deleteAndGoBack();
+        }
       });
-    }
-    this.websiteService.deleteWebsite(this.website).subscribe();
+    } else
+      this.deleteAndGoBack();
+  }
+
+  private deleteAndGoBack(){
+    this.websiteService.deleteWebsite(this.website).subscribe(() => {
+      this.goBack();
+    });
   }
 
   //called by emiter
@@ -87,6 +101,13 @@ export class WebsiteComponent {
         console.log("last ratingStatus:" + website.ratingStatus);
         console.log("last rated:" + website.lastRated);
         console.log("monitered page eval date:" + website.moniteredPages[0].lastRated);
+        
+        this.stats = this.calculateStats();
+        console.log("this.stats: " + this.stats);
+
+        this.errorData = this.calculateError();
+        console.log("this.errorData: " + this.errorData);
+
       });
     });
   }
@@ -97,5 +118,22 @@ export class WebsiteComponent {
 
   goBack(): void {
     this.location.back();
+  }
+
+  calculateStats(): number[] {
+    const stats= [
+      this.website.failedAssertionsTotal/this.website.ratedTotal*100,
+      this.website.failedAAATotal/this.website.ratedTotal*100,
+      this.website.failedAATotal/this.website.ratedTotal*100,
+      this.website.failedATotal/this.website.ratedTotal*100,
+    ];
+    return stats
+  }
+
+  calculateError(): ErrorElement[]{
+    return this.website.commonErrors.map((errorName, index) => ({
+        rank: index + 1,
+        errorName: errorName,
+    }));
   }
 }
