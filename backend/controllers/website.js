@@ -68,17 +68,18 @@ exports.deletePages = asyncHandler(async (req, res, next) => {
     const pagesToDelete = req.query.urls.split(',');
     const website = await Website.findOne({ _id: req.params.id }).exec();
     const monitoredPages = await Page.find({ website: website._id }).exec();
+    const deletedPages = [];
 
     for(const i in monitoredPages) {
         const page = monitoredPages[i];
-        if(pagesToDelete.includes(page.pageURL.split(website.websiteURL)[1])){
+        if(pagesToDelete.includes(page.pageURL)){
             const id = page._id;
             await Page.findByIdAndDelete(id)
                 .then(data => {
                     if (!data)
                         res.status(404).json( {message: `Could not delete Page with id=${id}.`});
                     else
-                        res.status(200).json(page);
+                        deletedPages.push(page);
                 })
                 .catch(err => {
                     res.status(500).json({
@@ -87,7 +88,7 @@ exports.deletePages = asyncHandler(async (req, res, next) => {
                 });
         }
     }
-        
+    res.status(200).json(deletedPages);
 })
 
 exports.requestRating = asyncHandler(async (req, res, next) => {
