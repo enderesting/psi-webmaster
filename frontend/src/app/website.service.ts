@@ -57,7 +57,7 @@ export class WebsiteService {
 
   deletePages(website: Website, pages: Page[]) : Observable<Page[]> {
     const url = `${this.websiteURL}/${website._id}/delete`;
-    const pageURLs = { urls: pages.map(page => page.pageURL) };
+    const pageURLs = { urls: pages.map(page => page.pageURL).join(',') };
     const options = {
       headers: this.httpOptions.headers,
       params: pageURLs
