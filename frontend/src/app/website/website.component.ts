@@ -57,10 +57,18 @@ export class WebsiteComponent {
   delete() {
     if(this.website.moniteredPages.length > 0) {
       const dialogRef = this.dialog.open(DialogComponent);
-      dialogRef.afterClosed().subscribe(() => {
-        this.deleteSelected(this.website.moniteredPages);
+      dialogRef.afterClosed().subscribe((result) => {
+        console.log(result)
+        if(result === 'ok'){
+          this.deleteSelected(this.website.moniteredPages);
+          this.deleteAndGoBack();
+        }
       });
-    }
+    } else
+      this.deleteAndGoBack();
+  }
+
+  private deleteAndGoBack(){
     this.websiteService.deleteWebsite(this.website).subscribe(() => {
       this.goBack();
     });
