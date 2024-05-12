@@ -54,7 +54,8 @@
 
     <app-page-list
       [monitoredPages]="website.moniteredPages"
-      (emitSelected)="deleteSelected($event)">
+      (emitDeleteSelected)="deleteSelected($event)"
+      (emitEvaluateSelected)="evaluateSelected($event)">
     </app-page-list>
     
   </mat-tab>

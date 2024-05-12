@@ -66,6 +66,11 @@ export class WebsiteComponent {
     });
   }
 
+  evaluateSelected(selection: Page[]) {
+    this.websiteService.evaluatePages(this.website,selection).subscribe(() => {
+      // do anything else?
+    });
+  }
 
   checkForErrorsIn(formControl: AbstractControl) {
     throw new Error('Method not implemented.');

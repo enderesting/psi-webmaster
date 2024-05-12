@@ -60,6 +60,11 @@ export class WebsiteService {
             );
   }
 
+  evaluatePages(website: Website, pages: Page[]) : Observable<Page[]> {
+    const url = `${this.websiteURL}/${website._id}/evaluate`;
+    const pageURLs = { urls: pages.map(page => page.pageURL) };
+    return this.http.post<Page[]>(url,pageURLs,this.httpOptions);
+  }
 
   /** error handling */
   private handleError<T>(operation = 'operation', result?: T) {
