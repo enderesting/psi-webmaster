@@ -25,6 +25,35 @@ const WebsiteSchema = new Schema({
         enum: ["To be rated", "Being rated", "Rated", "Error"],
         required: true,
         default: "To be rated"
+    },
+
+    ratedTotal: {
+        type: Number,
+        min: 0
+    },
+
+    failedAssertionsTotal: {
+        type: Number,
+        min: 0
+    },
+
+    failedATotal: {
+        type: Number,
+        min: 0
+    },
+
+    failedAATotal: {
+        type: Number,
+        min: 0
+    },
+
+    failedAAATotal: {
+        type: Number,
+        min: 0
+    },
+
+    commonErrors: {
+        type: [String]
     }
 });
 

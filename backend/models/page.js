@@ -22,6 +22,22 @@ const PageSchema = new Schema({
     rating: {
         type: String,
         enum: ["Compliant", "Non-compliant"]
+    },
+
+    failedAnyAssertion: {
+        type: Boolean
+    },
+
+    failedA: {
+        type: Boolean
+    },
+
+    failedAA: {
+        type: Boolean
+    },
+
+    failedAAA: {
+        type: Boolean
     }
 });
 
