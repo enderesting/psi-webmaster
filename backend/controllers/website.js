@@ -64,26 +64,30 @@ exports.deleteWebsite = asyncHandler(async (req, res, next) => {
         });
 });
 
-exports.deletePage = asyncHandler(async (req, res, next) => {
-    const id = req.params.id;
+exports.deletePages = asyncHandler(async (req, res, next) => {
+    const pagesToDelete = req.query.urls.split(',');
+    const website = await Website.findOne({ _id: req.params.id }).exec();
+    const monitoredPages = await Page.find({ website: website._id }).exec();
 
-    await Page.findByIdAndDelete(id)
-        .then(data => {
-            if (!data) {
-                res.status(404).json({
-                    message: `Cannot delete Tutorial with id=${id}.`
+    for(const i in monitoredPages) {
+        const page = monitoredPages[i];
+        if(pagesToDelete.includes(page.pageURL.split(website.websiteURL)[1])){
+            const id = page._id;
+            await Page.findByIdAndDelete(id)
+                .then(data => {
+                    if (!data)
+                        res.status(404).json( {message: `Cannot delete Page with id=${id}.`});
+                    else
+                        res.json( {message: "Page was deleted successfully!"});
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        message: "Could not delete Page with id=" + id
+                    });
                 });
-            } else {
-                res.json({
-                    message: "Tutorial was deleted successfully!"
-                });
-            }
-        })
-        .catch(err => {
-            res.status(500).json({
-                message: "Could not delete Tutorial with id=" + id
-            });
-        });
+        }
+    }
+        
 })
 
 exports.requestRating = asyncHandler(async (req, res, next) => {

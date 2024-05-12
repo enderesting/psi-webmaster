@@ -13,7 +13,7 @@ router.post("/website/:id", websiteController.addPage);
 router.post("/website/:id/evaluate", websiteController.requestRating);
 
 router.delete("/website/:id", websiteController.deleteWebsite);
-router.delete("/page/:id", websiteController.deletePage);
+router.delete("/website/:id/delete", websiteController.deletePages);
 
 router.get("/init", initDBController.initDB);
 
