@@ -77,6 +77,8 @@ exports.requestRating = asyncHandler(async (req, res, next) => {
     dbWebsite.ratingStatus = "Being rated";
     await dbWebsite.save();
 
+    res.status(201).json({ message: "Rating..." });
+
     // Generate accessability reports
     const urlAssertions = await qw.evaluateURLs(req.body.urls)
     const timestamp = Date.now();
@@ -124,7 +126,6 @@ exports.requestRating = asyncHandler(async (req, res, next) => {
     console.log("Save Website Status");
 
     await dbWebsite.save();
-    res.status(201).json({ message: "Rating finished" });
 })
 
 async function handlePageAssertions(fullUrl, websiteURL, urlAssertions,
