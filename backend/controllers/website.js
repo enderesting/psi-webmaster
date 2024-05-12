@@ -76,13 +76,13 @@ exports.deletePages = asyncHandler(async (req, res, next) => {
             await Page.findByIdAndDelete(id)
                 .then(data => {
                     if (!data)
-                        res.status(404).json( {message: `Cannot delete Page with id=${id}.`});
+                        res.status(404).json( {message: `Could not delete Page with id=${id}.`});
                     else
-                        res.json( {message: "Page was deleted successfully!"});
+                        res.status(200).json(page);
                 })
                 .catch(err => {
                     res.status(500).json({
-                        message: "Could not delete Page with id=" + id
+                        message: `Could not delete Page with id=${id}.`
                     });
                 });
         }

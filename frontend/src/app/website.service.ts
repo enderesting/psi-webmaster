@@ -61,7 +61,7 @@ export class WebsiteService {
     const options = {
       headers: this.httpOptions.headers,
       params: pageURLs
-    }
+    };
     return this.http.delete<Page[]>(url,options);
   }
 

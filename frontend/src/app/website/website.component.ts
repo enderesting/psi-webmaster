@@ -49,7 +49,6 @@ export class WebsiteComponent {
       this.websiteService.addPageToWebsite(newPage,this.website._id).subscribe((page: Page) => {
         newPage._id = page._id;
       });
-      console.log(this.website.moniteredPages);
       this.website.moniteredPages.push(newPage); // if this isnt pushed, its not triggered
     }
   }
@@ -58,7 +57,6 @@ export class WebsiteComponent {
     if(this.website.moniteredPages.length > 0) {
       const dialogRef = this.dialog.open(DialogComponent);
       dialogRef.afterClosed().subscribe((result) => {
-        console.log(result)
         if(result === 'ok'){
           this.deleteSelected(this.website.moniteredPages);
           this.deleteAndGoBack();
