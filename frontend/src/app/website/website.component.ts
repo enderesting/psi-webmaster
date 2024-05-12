@@ -61,7 +61,9 @@ export class WebsiteComponent {
         this.deleteSelected(this.website.moniteredPages);
       });
     }
-    this.websiteService.deleteWebsite(this.website).subscribe();
+    this.websiteService.deleteWebsite(this.website).subscribe(() => {
+      this.goBack();
+    });
   }
 
   //called by emiter
