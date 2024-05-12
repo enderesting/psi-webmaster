@@ -18,6 +18,8 @@ export class PageListComponent implements OnChanges {
     private cdr : ChangeDetectorRef,
   ) {}
   @Input() monitoredPages: Page[] = [];
+  @Input() showSpinner: boolean = false;
+  @Input() disableButtons: boolean = false;
   @Output() emitDeleteSelected = new EventEmitter<Page[]>();
   @Output() emitEvaluateSelected = new EventEmitter<Page[]>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;

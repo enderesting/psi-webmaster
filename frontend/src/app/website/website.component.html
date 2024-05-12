@@ -57,6 +57,8 @@
 
     <app-page-list
       [monitoredPages]="website.moniteredPages"
+      [showSpinner]="showSpinner" 
+      [disableButtons]="disableButtons"
       (emitDeleteSelected)="deleteSelected($event)"
       (emitEvaluateSelected)="evaluateSelected($event)">
     </app-page-list>

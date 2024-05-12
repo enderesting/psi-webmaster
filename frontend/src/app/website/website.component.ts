@@ -37,6 +37,8 @@ export class WebsiteComponent {
   websitePattern:string = '';
   siteFormControl = new FormControl('', [Validators.required]);
 
+  showSpinner = false;
+  disableButtons = false;
 
   submit(input : string) {
     if(input.startsWith(this.website.websiteURL)) {
@@ -75,6 +77,9 @@ export class WebsiteComponent {
   }
 
   evaluateSelected(selection: Page[]) {
+    this.showSpinner = true;
+    this.disableButtons = true;
+
     // change evaluation to in rating
     this.website.ratingStatus = RatingStatus.BEING_RATED;
     // refresh probably?
@@ -88,6 +93,9 @@ export class WebsiteComponent {
         console.log("last rated:" + website.lastRated);
         console.log("monitered page eval date:" + website.moniteredPages[0].lastRated);
       });
+
+      this.showSpinner = false;
+      this.disableButtons = false;
     });
   }
 
