@@ -32,7 +32,6 @@ exports.addWebsite = asyncHandler(async (req, res, next) => {
     resWebsite.websiteURL = website.websiteURL;
     resWebsite.addedDate = website.addedDate;
     resWebsite.ratingStatus = website.ratingStatus;
-
     res.status(201).json(resWebsite);
 })
 

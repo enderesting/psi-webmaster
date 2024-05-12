@@ -25,7 +25,8 @@ export class WebsiteComponent {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.websiteService.getWebsiteById(id)
       .subscribe(website => {
-        this.website = website
+        this.website = website;
+        this.stats = this.calculateStats();
         this.websitePattern = `^${this.website.websiteURL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`;
         // console.log(this.websitePattern);
         // console.log("ngOnInit: " + website.moniteredPages[0]._id + " "+ website.moniteredPages[0].pageURL);
@@ -36,6 +37,7 @@ export class WebsiteComponent {
   input: string = '';
   websitePattern:string = '';
   siteFormControl = new FormControl('', [Validators.required]);
+  stats: number[] = [0,0,0,0]
 
 
   submit(input : string) {
@@ -87,6 +89,11 @@ export class WebsiteComponent {
         console.log("last ratingStatus:" + website.ratingStatus);
         console.log("last rated:" + website.lastRated);
         console.log("monitered page eval date:" + website.moniteredPages[0].lastRated);
+        
+
+        this.stats = this.calculateStats();
+        console.log("this.stats: " + this.stats);
+        
       });
     });
   }
@@ -97,5 +104,15 @@ export class WebsiteComponent {
 
   goBack(): void {
     this.location.back();
+  }
+
+  calculateStats(): number[] {
+    const stats= [
+      this.website.failedAssertionsTotal/this.website.ratedTotal*100,
+      this.website.failedAAATotal/this.website.ratedTotal*100,
+      this.website.failedAATotal/this.website.ratedTotal*100,
+      this.website.failedATotal/this.website.ratedTotal*100,
+    ];
+    return stats
   }
 }

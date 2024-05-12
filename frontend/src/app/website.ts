@@ -5,6 +5,12 @@ export interface Website {
     lastRated?: Date;
     ratingStatus: RatingStatus;
     moniteredPages: Page[];
+    commonErrors: string[];
+    failedAAATotal: number;
+    failedAATotal: number;
+    failedATotal: number;
+    failedAssertionsTotal: number;
+    ratedTotal: number;
 }
 
 export enum RatingStatus {

@@ -28,22 +28,22 @@ exports.getWebsite = asyncHandler(async (req, res, next) => {
     if (dbWebsite.lastRated != null) {
         resWebsite.lastRated = dbWebsite.lastRated;
     } 
-    if (dbWebsite.ratedTotal) {
+    if (dbWebsite.ratedTotal != null) {
         resWebsite.ratedTotal = dbWebsite.ratedTotal;
     }
-    if (dbWebsite.failedAssertionsTotal) {
+    if (dbWebsite.failedAssertionsTotal != null) {
         resWebsite.failedAssertionsTotal = dbWebsite.failedAssertionsTotal;
     }
-    if (dbWebsite.failedATotal) {
+    if (dbWebsite.failedATotal != null) {
         resWebsite.failedATotal = dbWebsite.failedATotal;
     }
-    if (dbWebsite.failedAATotal) {
+    if (dbWebsite.failedAATotal != null) {
         resWebsite.failedAATotal = dbWebsite.failedAATotal;
     }
-    if (dbWebsite.failedAAATotal) {
+    if (dbWebsite.failedAAATotal != null) {
         resWebsite.failedAAATotal = dbWebsite.failedAAATotal;
     }
-    if (dbWebsite.commonErrors) {
+    if (dbWebsite.commonErrors != null) {
         resWebsite.commonErrors = dbWebsite.commonErrors;
     }
 

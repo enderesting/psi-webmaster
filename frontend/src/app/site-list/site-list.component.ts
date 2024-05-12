@@ -120,7 +120,13 @@ export class SiteListComponent implements AfterViewInit {
         websiteURL: input,
         addedDate: new Date(),
         ratingStatus: RatingStatus.TO_BE_RATED,
-        moniteredPages: []
+        moniteredPages: [],
+        ratedTotal:0,
+        failedAssertionsTotal:0,
+        failedAAATotal:0,
+        failedAATotal:0,
+        failedATotal:0,
+        commonErrors:[]
       };
       this.webService.addWebsite(newSite).subscribe((site: Website) => {
           newSite._id = site._id;

@@ -6,6 +6,19 @@
 
 <div>
 
-    <app-chart-info></app-chart-info>
+    <!-- <app-chart-info></app-chart-info> -->
+
+    <div id="chart">
+        <apx-chart
+          [series]="this.stats!"
+          [chart]="chartOptions.chart!"
+          [dataLabels]="chartOptions.dataLabels!"
+          [labels]="chartOptions.labels"
+          [responsive]="chartOptions.responsive!"
+          [legend]="chartOptions.legend!"
+          [plotOptions]="chartOptions.plotOptions!"
+        ></apx-chart>
+    </div>
+      
     
 </div>
