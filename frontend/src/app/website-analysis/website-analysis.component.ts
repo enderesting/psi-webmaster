@@ -1,5 +1,6 @@
 import { WebsiteService } from '../website.service';
 import { Component, Input, ViewChild } from "@angular/core";
+import { ErrorElement } from '../website';
 import {
   ApexDataLabels,
   ApexLegend,
@@ -19,8 +20,8 @@ import {
 export class WebsiteAnalysisComponent {
   @ViewChild("chart") chart: ChartComponent = {} as ChartComponent;
   @Input() stats: number[] = [];
-  @Input() dataSource : string[]= [];
-  displayedColumns: string[] = ['errorName'];
+  @Input() dataSource : ErrorElement[]= [];
+  displayedColumns: string[] = ['rank','errorName'];
 
   public chartOptions: Partial<ChartOptions>;
 

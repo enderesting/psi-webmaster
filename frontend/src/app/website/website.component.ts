@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Website, RatingStatus, RatingResult, Page } from '../website';
+import { Website, RatingStatus, RatingResult, Page, ErrorElement} from '../website';
 import { WebsiteService } from '../website.service';
 import { Location } from '@angular/common';
 import { AbstractControl, FormControl, Validators } from '@angular/forms';
@@ -27,6 +27,8 @@ export class WebsiteComponent {
       .subscribe(website => {
         this.website = website;
         this.stats = this.calculateStats();
+        this.errorData = this.calculateError();
+        console.log(this.website.commonErrors);
         this.websitePattern = `^${this.website.websiteURL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`;
         // console.log(this.websitePattern);
         // console.log("ngOnInit: " + website.moniteredPages[0]._id + " "+ website.moniteredPages[0].pageURL);
@@ -38,6 +40,8 @@ export class WebsiteComponent {
   websitePattern:string = '';
   siteFormControl = new FormControl('', [Validators.required]);
   stats: number[] = [0,0,0,0]
+
+  errorData: ErrorElement[] = []
 
 
   submit(input : string) {
@@ -98,10 +102,12 @@ export class WebsiteComponent {
         console.log("last rated:" + website.lastRated);
         console.log("monitered page eval date:" + website.moniteredPages[0].lastRated);
         
-
         this.stats = this.calculateStats();
         console.log("this.stats: " + this.stats);
-        
+
+        this.errorData = this.calculateError();
+        console.log("this.errorData: " + this.errorData);
+
       });
     });
   }
@@ -122,5 +128,12 @@ export class WebsiteComponent {
       this.website.failedATotal/this.website.ratedTotal*100,
     ];
     return stats
+  }
+
+  calculateError(): ErrorElement[]{
+    return this.website.commonErrors.map((errorName, index) => ({
+        rank: index + 1,
+        errorName: errorName,
+    }));
   }
 }

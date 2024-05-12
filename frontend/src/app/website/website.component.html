@@ -53,19 +53,19 @@
           [style.height.px]=52
           >Submit</button>
       </form>
-    </div>
-
     <app-page-list
       [monitoredPages]="website.moniteredPages"
       (emitDeleteSelected)="deleteSelected($event)"
       (emitEvaluateSelected)="evaluateSelected($event)">
     </app-page-list>
-    
+    </div>
+
   </mat-tab>
   <mat-tab label="Statistics">
-    
+
     <app-website-analysis
       [stats]="this.stats"
+      [dataSource]="this.errorData"
     ></app-website-analysis>
 
   </mat-tab>

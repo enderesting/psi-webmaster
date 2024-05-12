@@ -33,3 +33,9 @@ export interface Page {
     lastRated?: Date;
     rating: RatingResult;
 }
+
+export interface ErrorElement {
+    rank: number;
+    errorName: string;
+}
+  

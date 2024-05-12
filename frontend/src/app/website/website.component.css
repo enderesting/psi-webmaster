@@ -5,3 +5,7 @@
 /* ::ng-deep .matListItemTitle {
     color: #00BFA5;
 } */
+
+.submit-page{
+    overflow-y: hidden;
+}
