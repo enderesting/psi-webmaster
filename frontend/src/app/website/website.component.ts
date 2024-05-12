@@ -54,15 +54,11 @@ export class WebsiteComponent {
 
   //called by emiter
   deleteSelected(selection:Page[]):void{
-    for (const eachPage of selection){
-      this.deleteSelectedPage(eachPage);
-    }
-  }
-
-  deleteSelectedPage(page:Page):void{
-    const index = this.website.moniteredPages.indexOf(page);
-    this.websiteService.deletePageFromWebsite(page).subscribe(() => {
-      this.website.moniteredPages.splice(index);
+    this.websiteService.deletePages(this.website,selection).subscribe((pages: Page[]) => {
+      pages.forEach(page => {
+        const index = this.website.moniteredPages.indexOf(page);
+        this.website.moniteredPages.splice(index);
+      })
     });
   }
 

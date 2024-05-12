@@ -50,14 +50,14 @@ export class WebsiteService {
     return this.http.post<Page>(url, page, this.httpOptions);
   }
 
-  /* dw about this until sprint 2 */
-  deletePageFromWebsite(page:Page): Observable<Page>{
-    const url = `${this.pageURL}/${page._id}`;
-    // console.log("delete: " + url);
-    return this.http.delete<Page>(url,this.httpOptions)
-            .pipe(
-              catchError(this.handleError<Page>(`deletePage id=${page._id}`))
-            );
+  deletePages(website: Website, pages: Page[]) : Observable<Page[]> {
+    const url = `${this.websiteURL}/${website._id}/delete`;
+    const pageURLs = { urls: pages.map(page => page.pageURL) };
+    const options = {
+      headers: this.httpOptions.headers,
+      params: pageURLs
+    }
+    return this.http.delete<Page[]>(url,options);
   }
 
   evaluatePages(website: Website, pages: Page[]) : Observable<Page[]> {
