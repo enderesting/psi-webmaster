@@ -4,7 +4,8 @@ import { Website, RatingStatus, RatingResult, Page } from '../website';
 import { WebsiteService } from '../website.service';
 import { Location } from '@angular/common';
 import { AbstractControl, FormControl, Validators } from '@angular/forms';
-
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 
 
 @Component({
@@ -16,7 +17,8 @@ export class WebsiteComponent {
   constructor(
     private route: ActivatedRoute,
     private websiteService: WebsiteService,
-    private location: Location
+    private location: Location,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -51,21 +53,32 @@ export class WebsiteComponent {
       this.website.moniteredPages.push(newPage); // if this isnt pushed, its not triggered
     }
   }
+  
+  delete() {
+    if(this.website.moniteredPages.length > 0) {
+      const dialogRef = this.dialog.open(DialogComponent);
+      dialogRef.afterClosed().subscribe(() => {
+        this.deleteSelected(this.website.moniteredPages);
+      });
+    }
+    this.websiteService.deleteWebsite(this.website).subscribe();
+  }
 
   //called by emiter
   deleteSelected(selection:Page[]):void{
-    for (const eachPage of selection){
-      this.deleteSelectedPage(eachPage);
-    }
-  }
-
-  deleteSelectedPage(page:Page):void{
-    const index = this.website.moniteredPages.indexOf(page);
-    this.websiteService.deletePageFromWebsite(page).subscribe(() => {
-      this.website.moniteredPages.splice(index);
+    this.websiteService.deletePages(this.website,selection).subscribe((pages: Page[]) => {
+      pages.forEach(page => {
+        const index = this.website.moniteredPages.indexOf(page);
+        this.website.moniteredPages.splice(index);
+      })
     });
   }
 
+  evaluateSelected(selection: Page[]) {
+    this.websiteService.evaluatePages(this.website,selection).subscribe(() => {
+      // do anything else?
+    });
+  }
 
   checkForErrorsIn(formControl: AbstractControl) {
     throw new Error('Method not implemented.');

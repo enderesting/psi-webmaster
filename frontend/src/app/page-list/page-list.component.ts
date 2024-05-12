@@ -18,7 +18,8 @@ export class PageListComponent implements OnChanges {
     private cdr : ChangeDetectorRef,
   ) {}
   @Input() monitoredPages: Page[] = [];
-  @Output() emitSelected = new EventEmitter<Page[]>();
+  @Output() emitDeleteSelected = new EventEmitter<Page[]>();
+  @Output() emitEvaluateSelected = new EventEmitter<Page[]>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable,{static:true}) table!: MatTable<Page>;
@@ -48,8 +49,13 @@ export class PageListComponent implements OnChanges {
   }
   
   deleteSelected(){
-    this.emitSelected.emit(this.selection.selected);
+    this.emitDeleteSelected.emit(this.selection.selected);
     //emitting selection for website to handle
+    this.selection.clear();
+  }
+
+  evaluateSelected() {
+    this.emitEvaluateSelected.emit(this.selection.selected);
     this.selection.clear();
   }
 

@@ -17,6 +17,9 @@
   </mat-list-item>
 </mat-list>
 
+<button mat-flat-button color="primary" (click)="delete()">
+  Delete website
+</button>
 
 <mat-tab-group animationDuration="1000ms">
   <mat-tab label="Pages">
@@ -54,7 +57,8 @@
 
     <app-page-list
       [monitoredPages]="website.moniteredPages"
-      (emitSelected)="deleteSelected($event)">
+      (emitDeleteSelected)="deleteSelected($event)"
+      (emitEvaluateSelected)="evaluateSelected($event)">
     </app-page-list>
     
   </mat-tab>
