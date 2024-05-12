@@ -13,8 +13,8 @@ async function main() {
     await deletePages();
     await deleteWebsites();
     // await createQWAssertions();
-    await createPages();
     await createWebsites();
+    await createPages();
 }
 
 async function createWebsites() {
