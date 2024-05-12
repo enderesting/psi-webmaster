@@ -26,7 +26,7 @@ exports.getWebsite = asyncHandler(async (req, res, next) => {
     resWebsite.ratingStatus = dbWebsite.ratingStatus;
     resWebsite.moniteredPages = resPages;
     if (dbWebsite.lastRated != null) {
-        resWebsite.lastDate = dbWebsite.lastRated;
+        resWebsite.lastEvalDate = dbWebsite.lastRated;
     } 
     if (dbWebsite.ratedTotal) {
         resWebsite.ratedTotal = dbWebsite.ratedTotal;
