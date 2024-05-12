@@ -19,6 +19,8 @@ import {
 export class WebsiteAnalysisComponent {
   @ViewChild("chart") chart: ChartComponent = {} as ChartComponent;
   @Input() stats: number[] = [];
+  @Input() dataSource : string[]= [];
+  displayedColumns: string[] = ['errorName'];
 
   public chartOptions: Partial<ChartOptions>;
 
@@ -27,7 +29,7 @@ export class WebsiteAnalysisComponent {
       series: this.stats,
       chart: {
         foreColor: "#fff",
-        height: 390,
+        height: 500,
         type: "radialBar"
       },
       plotOptions: {
@@ -52,14 +54,14 @@ export class WebsiteAnalysisComponent {
         }
       },
       colors: ["#1ab7ea", "#0084ff", "#39539E", "#0077B5"],
-      labels: ["Total","AAA","AA","A"],
+      labels: ["Total page with error","Pages with 1+ AAA error","Pages with 1+ AA error","Pages with 1+ A error"],
       legend: {
         show: true,
         floating: true,
         fontSize: "16px",
         position: "left",
-        offsetX: -10,
-        offsetY: 40,
+        offsetX: -30,
+        offsetY: 70,
         labels: {
           useSeriesColors: true
         },
@@ -67,7 +69,7 @@ export class WebsiteAnalysisComponent {
           return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
         },
         itemMargin: {
-          horizontal: 3
+          horizontal: 1
         }
       },
       responsive: [
