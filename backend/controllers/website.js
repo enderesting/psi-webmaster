@@ -47,6 +47,23 @@ exports.addPage = asyncHandler(async (req, res, next) => {
     res.status(201).json(resPage);
 })
 
+exports.deleteWebsite = asyncHandler(async (req, res, next) => {
+    const id = req.params.id;
+
+    await Website.findByIdAndDelete(id)
+        .then(data => {
+            if (!data)
+                res.status(404).json( {message: `Cannot delete Website with id=${id}.`});
+            else
+                res.json( {message: "Website was deleted successfully!"});
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: "Could not delete Website with id=" + id
+            });
+        });
+});
+
 exports.deletePage = asyncHandler(async (req, res, next) => {
     const id = req.params.id;
 
