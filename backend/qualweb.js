@@ -79,7 +79,7 @@ exports.commonNErrors = (n, assertions) => {
     }
 
     const countsEntries = Object.entries(counts);
-    const sortedCountsEntries = countsEntries.toSorted((entry1, entry2) => {
+    const sortedCountsEntries = countsEntries.sort((entry1, entry2) => {
         return entry2[1] - entry1[1];
     })
 

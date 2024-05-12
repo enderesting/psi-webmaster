@@ -67,7 +67,6 @@ exports.deletePage = asyncHandler(async (req, res, next) => {
                 message: "Could not delete Tutorial with id=" + id
             });
         });
-    console.log("what? this is not supposed to happen");
 })
 
 exports.requestRating = asyncHandler(async (req, res, next) => {
@@ -78,18 +77,19 @@ exports.requestRating = asyncHandler(async (req, res, next) => {
     dbWebsite.ratingStatus = "Being rated";
     await dbWebsite.save();
 
-    res.status(201).json({ message: "Rating..." });
-
     // Generate accessability reports
     const urlAssertions = await qw.evaluateURLs(req.body.urls)
     const timestamp = Date.now();
+    console.log("Assertion starts");
 
     for (const fullUrl in urlAssertions) {
+        console.log("Assertion for: " + fullUrl);
         await handlePageAssertions(fullUrl, websiteURL, urlAssertions, 
             timestamp);
     }
 
     // Update associated website's mongo document
+    console.log("Update website status");
     let totalRated = 0;
     let totalOfFailed = 0;
     let totalOfAFailed = 0;
@@ -121,15 +121,17 @@ exports.requestRating = asyncHandler(async (req, res, next) => {
     dbWebsite.commonErrors = common10Errors;
     dbWebsite.lastRated = timestamp;
     dbWebsite.ratingStatus = "Rated";
+    console.log("Save Website Status");
 
     await dbWebsite.save();
+    res.status(201).json({ message: "Rating finished" });
 })
 
 async function handlePageAssertions(fullUrl, websiteURL, urlAssertions,
         timestamp) {
-    const pageUrl = fullUrl.replace(websiteURL + "/", "");
-    const dbPage = await Page.findOne({ pageURL: pageUrl }).exec();
-
+    // const pageUrl = fullUrl.replace(websiteURL + "/", "");
+    // console.log(pageUrl);
+    const dbPage = await Page.findOne({ pageURL: fullUrl }).exec(); // struggling to find anything here
     // Delete previous assertions for this page
     await QWAssertion.deleteMany({ page: dbPage._id }).exec();
 
