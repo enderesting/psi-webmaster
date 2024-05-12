@@ -51,7 +51,6 @@ export class WebsiteComponent {
       this.websiteService.addPageToWebsite(newPage,this.website._id).subscribe((page: Page) => {
         newPage._id = page._id;
       });
-      console.log(this.website.moniteredPages);
       this.website.moniteredPages.push(newPage); // if this isnt pushed, its not triggered
     }
   }
@@ -59,11 +58,20 @@ export class WebsiteComponent {
   delete() {
     if(this.website.moniteredPages.length > 0) {
       const dialogRef = this.dialog.open(DialogComponent);
-      dialogRef.afterClosed().subscribe(() => {
-        this.deleteSelected(this.website.moniteredPages);
+      dialogRef.afterClosed().subscribe((result) => {
+        if(result === 'ok'){
+          this.deleteSelected(this.website.moniteredPages);
+          this.deleteAndGoBack();
+        }
       });
-    }
-    this.websiteService.deleteWebsite(this.website).subscribe();
+    } else
+      this.deleteAndGoBack();
+  }
+
+  private deleteAndGoBack(){
+    this.websiteService.deleteWebsite(this.website).subscribe(() => {
+      this.goBack();
+    });
   }
 
   //called by emiter
