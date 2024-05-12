@@ -25,7 +25,7 @@ export class PageListComponent implements OnChanges {
   @ViewChild(MatTable,{static:true}) table!: MatTable<Page>;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['select','websiteURL','lastEvalDate','ratingResult'];
+  displayedColumns = ['select','websiteURL','lastRated','rating'];
   clickedRows = new Set<Page>();
   selection = new SelectionModel<Page>(true, []);
 

@@ -15,7 +15,7 @@ import {ReactiveFormsModule} from '@angular/forms';
   styleUrls: ['./site-list.component.css']
 })
 export class SiteListComponent implements AfterViewInit {
-  displayedColumns = ['websiteURL','addedDate','lastEvalDate','ratingStatus'];
+  displayedColumns = ['websiteURL','addedDate','lastRated','ratingStatus'];
   dataSource: MatTableDataSource<Website>;
   websites: Website[] = []
   

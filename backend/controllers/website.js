@@ -23,9 +23,29 @@ exports.getWebsite = asyncHandler(async (req, res, next) => {
     resWebsite._id = dbWebsite._id;
     resWebsite.websiteURL = dbWebsite.websiteURL;
     resWebsite.addedDate = dbWebsite.addedDate;
-    if (dbWebsite.lastRated != null) resWebsite.lastDate = dbWebsite.lastRated;
     resWebsite.ratingStatus = dbWebsite.ratingStatus;
     resWebsite.moniteredPages = resPages;
+    if (dbWebsite.lastRated != null) {
+        resWebsite.lastRated = dbWebsite.lastRated;
+    } 
+    if (dbWebsite.ratedTotal) {
+        resWebsite.ratedTotal = dbWebsite.ratedTotal;
+    }
+    if (dbWebsite.failedAssertionsTotal) {
+        resWebsite.failedAssertionsTotal = dbWebsite.failedAssertionsTotal;
+    }
+    if (dbWebsite.failedATotal) {
+        resWebsite.failedATotal = dbWebsite.failedATotal;
+    }
+    if (dbWebsite.failedAATotal) {
+        resWebsite.failedAATotal = dbWebsite.failedAATotal;
+    }
+    if (dbWebsite.failedAAATotal) {
+        resWebsite.failedAAATotal = dbWebsite.failedAAATotal;
+    }
+    if (dbWebsite.commonErrors) {
+        resWebsite.commonErrors = dbWebsite.commonErrors;
+    }
 
     res.status(200).json(resWebsite);
 })
@@ -77,7 +97,7 @@ exports.requestRating = asyncHandler(async (req, res, next) => {
     dbWebsite.ratingStatus = "Being rated";
     await dbWebsite.save();
 
-    res.status(201).json({ message: "Rating..." });
+    // res.status(201).json({ message: "Rating..." });
 
     // Generate accessability reports
     const urlAssertions = await qw.evaluateURLs(req.body.urls)
@@ -126,6 +146,7 @@ exports.requestRating = asyncHandler(async (req, res, next) => {
     console.log("Save Website Status");
 
     await dbWebsite.save();
+    res.status(201).json({ message: "Rated" });
 })
 
 async function handlePageAssertions(fullUrl, websiteURL, urlAssertions,
@@ -140,6 +161,7 @@ async function handlePageAssertions(fullUrl, websiteURL, urlAssertions,
     let anyAFailed = false;
     let anyAAFailed = false;
     let anyAAAFailed = false;
+    let finalRating = "Compliant";
 
     // Add the new assertions
     const assertions = urlAssertions[fullUrl];
@@ -156,6 +178,7 @@ async function handlePageAssertions(fullUrl, websiteURL, urlAssertions,
 
         if (assertion.outcome == "failed") {
             anyFailed = true;
+            finalRating = "Non-compliant";
             if (assertion.level == "A") { anyAFailed = true; }
             if (assertion.level == "AA") { anyAAFailed = true; }
             if (assertion.level == "AAA") { anyAAAFailed = true; }
@@ -168,6 +191,7 @@ async function handlePageAssertions(fullUrl, websiteURL, urlAssertions,
     dbPage.failedAA = anyAAFailed;
     dbPage.failedAAA = anyAAAFailed;
     dbPage.lastRated = timestamp;
+    dbPage.rating = finalRating;
     await dbPage.save();
 }
 

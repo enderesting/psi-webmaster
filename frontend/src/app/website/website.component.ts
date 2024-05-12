@@ -44,7 +44,7 @@ export class WebsiteComponent {
         _id: '',
         websiteURL: this.website.websiteURL,
         pageURL: input,
-        ratingResult: RatingResult.NONE,
+        rating: RatingResult.NONE,
       };
       this.websiteService.addPageToWebsite(newPage,this.website._id).subscribe((page: Page) => {
         newPage._id = page._id;
@@ -75,8 +75,19 @@ export class WebsiteComponent {
   }
 
   evaluateSelected(selection: Page[]) {
+    // change evaluation to in rating
+    this.website.ratingStatus = RatingStatus.BEING_RATED;
+    // refresh probably?
+
     this.websiteService.evaluatePages(this.website,selection).subscribe(() => {
-      // do anything else?
+      console.log("Done: reload website");
+      this.websiteService.getWebsiteById(this.website._id)
+      .subscribe(website => {
+        this.website = website;
+        console.log("last ratingStatus:" + website.ratingStatus);
+        console.log("last rated:" + website.lastRated);
+        console.log("monitered page eval date:" + website.moniteredPages[0].lastRated);
+      });
     });
   }
 

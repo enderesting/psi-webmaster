@@ -2,7 +2,7 @@ export interface Website {
     _id: string;
     websiteURL: string;
     addedDate: Date;
-    lastEvalDate?: Date;
+    lastRated?: Date;
     ratingStatus: RatingStatus;
     moniteredPages: Page[];
 }
@@ -24,6 +24,6 @@ export interface Page {
     _id: string;
     websiteURL: string;
     pageURL: string;
-    lastEvalDate?: Date;
-    ratingResult: RatingResult;
+    lastRated?: Date;
+    rating: RatingResult;
 }
