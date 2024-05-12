@@ -4,7 +4,8 @@ import { Website, RatingStatus, RatingResult, Page } from '../website';
 import { WebsiteService } from '../website.service';
 import { Location } from '@angular/common';
 import { AbstractControl, FormControl, Validators } from '@angular/forms';
-
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 
 
 @Component({
@@ -16,7 +17,8 @@ export class WebsiteComponent {
   constructor(
     private route: ActivatedRoute,
     private websiteService: WebsiteService,
-    private location: Location
+    private location: Location,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -52,10 +54,19 @@ export class WebsiteComponent {
     }
   }
 
+  openDialog(){
+    const dialogRef = this.dialog.open(DialogComponent);
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('ok');
+    });
+  }
+
   delete() {
     if(this.website.moniteredPages.length > 0) {
-      // dialog for user confirmation
-      this.deleteSelected(this.website.moniteredPages);
+      const dialogRef = this.dialog.open(DialogComponent);
+      dialogRef.afterClosed().subscribe(() => {
+        this.deleteSelected(this.website.moniteredPages);
+      });
     }
     this.websiteService.deleteWebsite(this.website).subscribe();
   }
