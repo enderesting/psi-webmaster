@@ -23,9 +23,29 @@ exports.getWebsite = asyncHandler(async (req, res, next) => {
     resWebsite._id = dbWebsite._id;
     resWebsite.websiteURL = dbWebsite.websiteURL;
     resWebsite.addedDate = dbWebsite.addedDate;
-    if (dbWebsite.lastRated != null) resWebsite.lastDate = dbWebsite.lastRated;
     resWebsite.ratingStatus = dbWebsite.ratingStatus;
     resWebsite.moniteredPages = resPages;
+    if (dbWebsite.lastRated != null) {
+        resWebsite.lastDate = dbWebsite.lastRated;
+    } 
+    if (dbWebsite.ratedTotal) {
+        resWebsite.ratedTotal = dbWebsite.ratedTotal;
+    }
+    if (dbWebsite.failedAssertionsTotal) {
+        resWebsite.failedAssertionsTotal = dbWebsite.failedAssertionsTotal;
+    }
+    if (dbWebsite.failedATotal) {
+        resWebsite.failedATotal = dbWebsite.failedATotal;
+    }
+    if (dbWebsite.failedAATotal) {
+        resWebsite.failedAATotal = dbWebsite.failedAATotal;
+    }
+    if (dbWebsite.failedAAATotal) {
+        resWebsite.failedAAATotal = dbWebsite.failedAAATotal;
+    }
+    if (dbWebsite.commonErrors) {
+        resWebsite.commonErrors = dbWebsite.commonErrors;
+    }
 
     res.status(200).json(resWebsite);
 })
