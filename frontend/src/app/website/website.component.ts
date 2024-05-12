@@ -53,14 +53,7 @@ export class WebsiteComponent {
       this.website.moniteredPages.push(newPage); // if this isnt pushed, its not triggered
     }
   }
-
-  openDialog(){
-    const dialogRef = this.dialog.open(DialogComponent);
-    dialogRef.afterClosed().subscribe(() => {
-      console.log('ok');
-    });
-  }
-
+  
   delete() {
     if(this.website.moniteredPages.length > 0) {
       const dialogRef = this.dialog.open(DialogComponent);
