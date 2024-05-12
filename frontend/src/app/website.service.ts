@@ -50,6 +50,11 @@ export class WebsiteService {
     return this.http.post<Page>(url, page, this.httpOptions);
   }
 
+  deleteWebsite(website: Website) : Observable<Website> {
+    const url = `${this.websiteURL}/${website._id}`;
+    return this.http.delete<Website>(url,this.httpOptions);
+  }
+
   deletePages(website: Website, pages: Page[]) : Observable<Page[]> {
     const url = `${this.websiteURL}/${website._id}/delete`;
     const pageURLs = { urls: pages.map(page => page.pageURL) };

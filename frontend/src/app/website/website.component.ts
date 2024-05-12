@@ -52,6 +52,14 @@ export class WebsiteComponent {
     }
   }
 
+  delete() {
+    if(this.website.moniteredPages.length > 0) {
+      // dialog for user confirmation
+      this.deleteSelected(this.website.moniteredPages);
+    }
+    this.websiteService.deleteWebsite(this.website).subscribe();
+  }
+
   //called by emiter
   deleteSelected(selection:Page[]):void{
     this.websiteService.deletePages(this.website,selection).subscribe((pages: Page[]) => {
