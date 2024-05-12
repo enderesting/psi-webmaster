@@ -24,9 +24,11 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatAutocompleteModule} from '@angular/material/autocomplete'; 
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatDialogModule} from '@angular/material/dialog'
 import { WebsiteAnalysisComponent } from './website-analysis/website-analysis.component';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { ChartInfoComponent } from './chart-info/chart-info.component';
+import { DialogComponent } from './dialog/dialog.component';
 
 @NgModule({
     declarations: [
@@ -36,6 +38,7 @@ import { ChartInfoComponent } from './chart-info/chart-info.component';
         PageListComponent,
         WebsiteAnalysisComponent,
         ChartInfoComponent,
+        DialogComponent,
     ],
     providers: [],
     bootstrap: [AppComponent],
@@ -61,6 +64,7 @@ import { ChartInfoComponent } from './chart-info/chart-info.component';
         MatAutocompleteModule,
         MatCheckboxModule,
         MatTabsModule,
+        MatDialogModule,
         NgApexchartsModule,
     ]
 })
