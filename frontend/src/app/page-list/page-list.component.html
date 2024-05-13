@@ -51,11 +51,12 @@
     </mat-paginator>
   </div>
   
-  <div>
-    <button mat-flat-button color="primary" (click)="deleteSelected()">
+  <div class="buttons">
+    <button mat-flat-button color="primary" [disabled]="disableButtons" (click)="deleteSelected()">
       Delete Selected
     </button>
-    <button mat-flat-button color="primary" (click)="evaluateSelected()">
+    <button mat-flat-button color="primary" [disabled]="disableButtons" (click)="evaluateSelected()">
       Evaluate Selected
     </button>
+    <mat-spinner diameter="25" *ngIf="showSpinner"></mat-spinner>
   </div>

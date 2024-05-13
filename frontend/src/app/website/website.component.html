@@ -17,7 +17,7 @@
   </mat-list-item>
 </mat-list>
 
-<button mat-flat-button color="primary" (click)="delete()">
+<button mat-flat-button color="primary" [disabled]="disableButtons" (click)="delete()">
   Delete website
 </button>
 
@@ -55,6 +55,8 @@
       </form>
     <app-page-list
       [monitoredPages]="website.moniteredPages"
+      [showSpinner]="showSpinner" 
+      [disableButtons]="disableButtons"
       (emitDeleteSelected)="deleteSelected($event)"
       (emitEvaluateSelected)="evaluateSelected($event)">
     </app-page-list>
