@@ -34,7 +34,9 @@
       <!-- rating result Column -->
       <ng-container matColumnDef="rating">
         <th mat-header-cell *matHeaderCellDef>Result</th>
-        <td mat-cell *matCellDef="let row">{{row.rating}}</td>
+        <td mat-cell *matCellDef="let row">
+          <a routerLink="/page/{{row._id}}">{{row.rating}}</a>
+        </td>
       </ng-container>
   
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
