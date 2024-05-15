@@ -31,6 +31,7 @@ import { WebsiteAnalysisComponent } from './website-analysis/website-analysis.co
 import { NgApexchartsModule } from "ng-apexcharts";
 import { ChartInfoComponent } from './chart-info/chart-info.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { PageEvaluationComponent } from './page-evaluation/page-evaluation.component';
 
 @NgModule({
     declarations: [
@@ -41,6 +42,7 @@ import { DialogComponent } from './dialog/dialog.component';
         WebsiteAnalysisComponent,
         ChartInfoComponent,
         DialogComponent,
+        PageEvaluationComponent,
     ],
     providers: [],
     bootstrap: [AppComponent],
