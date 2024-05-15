@@ -26,6 +26,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDialogModule} from '@angular/material/dialog'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { WebsiteAnalysisComponent } from './website-analysis/website-analysis.component';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { ChartInfoComponent } from './chart-info/chart-info.component';
@@ -67,6 +68,7 @@ import { DialogComponent } from './dialog/dialog.component';
         MatTabsModule,
         MatDialogModule,
         MatProgressSpinnerModule,
+        MatSnackBarModule,
         NgApexchartsModule,
     ]
 })
