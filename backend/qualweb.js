@@ -11,7 +11,7 @@ const launchOptions = {
     args: ['--no-sandbox', '--ignore-certificate-errors'],
 }
 
-const qualWeb = new QualWeb({adBlock: true,});
+const qualWeb = new QualWeb({adBlock: false,});
 
 exports.evaluateURLs = async (pageURLs) => {
     await qualWeb.start(clusterOptions,launchOptions);
