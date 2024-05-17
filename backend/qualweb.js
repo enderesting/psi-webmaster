@@ -7,10 +7,14 @@ const clusterOptions = {
     monitor: true
 };
 
-const qualWeb = new QualWeb({});
+const launchOptions = {
+    args: ['--no-sandbox', '--ignore-certificate-errors'],
+}
+
+const qualWeb = new QualWeb({adBlock: true,});
 
 exports.evaluateURLs = async (pageURLs) => {
-    await qualWeb.start(clusterOptions);
+    await qualWeb.start(clusterOptions,launchOptions);
     reports = await qualWeb.evaluate({urls: pageURLs});
     await qualWeb.stop();
 
