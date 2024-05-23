@@ -1,6 +1,10 @@
 const {QualWeb} = require('@qualweb/core');
 const fs = require('fs')
 
+const plugins = {
+    adBlock: false
+}
+
 const clusterOptions = {
     maxConcurrency: 2,
     timeout: 60 * 1000,
@@ -11,62 +15,74 @@ const launchOptions = {
     args: ['--no-sandbox', '--ignore-certificate-errors'],
 }
 
-const qualWeb = new QualWeb({adBlock: false,});
+const qualWeb = new QualWeb(plugins);
 
 exports.evaluateURLs = async (pageURLs) => {
-    await qualWeb.start(clusterOptions,launchOptions);
-    reports = await qualWeb.evaluate({urls: pageURLs});
+    const evaluationOptions = {
+        urls: pageURLs,
+        execute: {
+            act: true,
+            wcag: true,
+            bp: false
+        }
+    }
+
+    await qualWeb.start(clusterOptions, launchOptions);
+    reports = await qualWeb.evaluate(evaluationOptions);
     await qualWeb.stop();
 
     urlAssertions = {}
-    for (const url in reports) {
-        urlAssertions[url] = this.parseEARLAssertions(reports[url].modules)
+    for (const url of pageURLs) {
+        if (reports[url] == null) {
+            urlAssertions[url] = {
+                rules: [],
+                error: true
+            }
+        } else {
+            urlAssertions[url] = this.parseURLEvalResults(reports[url].modules)
+        }
     }
-    
+
     return urlAssertions;
 }
 
-exports.saveJSONFile = (objToSave, path) => {
-    strToWrite = JSON.stringify(objToSave, null, 2)
-    fs.writeFile(path, strToWrite, (err) => {
-        if (err) {console.log("ERROR! Didn't save report!")}
-    })
+exports.parseURLEvalResults = (modules) => {
+    if (modules["act-rules"] == null ||
+        modules["wcag-techniques"] == null) {
+            return { rules: [], error: true }
+    }
+
+    const actRules = modules["act-rules"]["assertions"]
+    const wcagRules = modules["wcag-techniques"]["assertions"]
+
+    const assertionsObject = {}
+    assertionsObject.rules = parseEARLModule(actRules, "act").concat(
+        parseEARLModule(wcagRules, "wcag"))
+    assertionsObject.error = false;
+    return assertionsObject;
 }
 
-exports.parseEARLAssertions = (modules) => {
-    actRules = modules["act-rules"]["assertions"]
-    wcagRules = modules["wcag-techniques"]["assertions"]
-    
-    cleanedAssertions = [];
-    for (const ruleName in actRules) {
-        const rule = actRules[ruleName];
-
-        const cleanedAssertion = {};
-        cleanedAssertion.module = "act"
-        cleanedAssertion.code = rule.code
-        cleanedAssertion.outcome = rule.metadata.outcome;
-        if (rule.metadata["success-criteria"].length > 0) {
-            cleanedAssertion.level = rule.metadata["success-criteria"][0].level
+parseEARLModule = (module, moduleName) => {
+    parsed = [];
+    for (const ruleName in module) {
+        const rule = module[ruleName];
+        const parsedRule = {
+            module: moduleName,
+            code: rule.code,
+            outcome: rule.metadata.outcome,
+            levels: []
         }
 
-        cleanedAssertions.push(cleanedAssertion)
-    }
-
-    for (const ruleName in wcagRules) {
-        const rule = wcagRules[ruleName];
-
-        const cleanedAssertion = {};
-        cleanedAssertion.module = "wcag"
-        cleanedAssertion.code = rule.code
-        cleanedAssertion.outcome = rule.metadata.outcome;
-        if (rule.metadata["success-criteria"].length > 0) {
-            cleanedAssertion.level = rule.metadata["success-criteria"][0].level
+        if (rule.metadata["success-criteria"] != null) {
+            for (const criteria of rule.metadata["success-criteria"]) {
+                parsedRule.levels.push(criteria.level)
+            }
         }
-
-        cleanedAssertions.push(cleanedAssertion)
+        
+        parsed.push(parsedRule);
     }
 
-    return cleanedAssertions;
+    return parsed;
 }
 
 exports.commonNErrors = (n, assertions) => {
@@ -94,4 +110,11 @@ exports.commonNErrors = (n, assertions) => {
     for (const [error, count] of commonEntries) {commonErrors.push(error);}
 
     return commonErrors;
+}
+
+exports.saveJSONFile = (objToSave, path) => {
+    strToWrite = JSON.stringify(objToSave, null, 2)
+    fs.writeFile(path, strToWrite, (err) => {
+        if (err) {console.log("ERROR! Didn't save report!")}
+    })
 }
