@@ -8,7 +8,6 @@ const plugins = {
 const clusterOptions = {
     maxConcurrency: 2,
     timeout: 60 * 1000,
-    monitor: true
 };
 
 const launchOptions = {

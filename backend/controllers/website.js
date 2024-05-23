@@ -119,17 +119,15 @@ exports.requestRating = asyncHandler(async (req, res, next) => {
     dbWebsite.ratingStatus = "Being rated";
     await dbWebsite.save();
 
-    // res.status(201).json({ message: "Rating..." });
+    console.log("Assertion starts");
 
     // Generate accessability reports
     const urlAssertions = await qw.evaluateURLs(req.body.urls)
     const timestamp = Date.now();
-    console.log("Assertion starts");
 
     for (const fullUrl in urlAssertions) {
         console.log("Assertion for: " + fullUrl);
-        await handlePageAssertions(fullUrl, websiteURL, urlAssertions, 
-            timestamp);
+        await handlePageAssertions(fullUrl, urlAssertions, timestamp);
     }
 
     // Update associated website's mongo document
@@ -171,39 +169,52 @@ exports.requestRating = asyncHandler(async (req, res, next) => {
     res.status(201).json({ message: "Rated" });
 })
 
-async function handlePageAssertions(fullUrl, websiteURL, urlAssertions,
-        timestamp) {
-    // const pageUrl = fullUrl.replace(websiteURL + "/", "");
-    // console.log(pageUrl);
-    const dbPage = await Page.findOne({ pageURL: fullUrl }).exec(); // struggling to find anything here
+async function handlePageAssertions(fullUrl, urlAssertions, timestamp) {
     // Delete previous assertions for this page
+    const dbPage = await Page.findOne({ pageURL: fullUrl }).exec(); 
     await QWAssertion.deleteMany({ page: dbPage._id }).exec();
 
     let anyFailed = false;
     let anyAFailed = false;
     let anyAAFailed = false;
     let anyAAAFailed = false;
-    let finalRating = "Compliant";
+
+    // Flag the page in case of a rating error
+    if (urlAssertions[fullUrl].error) {
+        dbPage.failedAnyAssertion = false;
+        dbPage.failedA = false;
+        dbPage.failedAA = false;
+        dbPage.failedAAA = false;
+        dbPage.lastRated = timestamp;
+        dbPage.rating = "Error in rating";
+        await dbPage.save();
+        return;
+    }
 
     // Add the new assertions
-    const assertions = urlAssertions[fullUrl];
+    const assertions = urlAssertions[fullUrl].rules;
     for (const assertion of assertions) {
         const qwAssertion = QWAssertion({
             module: assertion.module,
             code: assertion.code,
             outcome: assertion.outcome,
-            page: dbPage._id
+            page: dbPage._id,
+            levels: []
         });
-        if (assertion.level) { qwAssertion.level = assertion.level; }
+
+        for (const level in assertion.levels) {
+            if (!qwAssertion.levels.includes(level)) {
+                qwAssertion.levels.push(level)
+            }
+        }
 
         await qwAssertion.save();
 
         if (assertion.outcome == "failed") {
             anyFailed = true;
-            finalRating = "Non-compliant";
-            if (assertion.level == "A") { anyAFailed = true; }
-            if (assertion.level == "AA") { anyAAFailed = true; }
-            if (assertion.level == "AAA") { anyAAAFailed = true; }
+            if (assertion.levels.includes("A")) { anyAFailed = true; }
+            if (assertion.levels.includes("AA")) { anyAAFailed = true; }
+            if (assertion.levels.includes("AAA")) { anyAAAFailed = true; }
         }
     }
 
@@ -213,7 +224,7 @@ async function handlePageAssertions(fullUrl, websiteURL, urlAssertions,
     dbPage.failedAA = anyAAFailed;
     dbPage.failedAAA = anyAAAFailed;
     dbPage.lastRated = timestamp;
-    dbPage.rating = finalRating;
+    dbPage.rating = anyAFailed || anyAAFailed ? "Non-compliant" : "Compliant";
     await dbPage.save();
 }
 

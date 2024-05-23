@@ -32,6 +32,8 @@ async function createWebsite(url) {
 async function createPages() {
     await Promise.all([
         createPage("https://en.wikipedia.org/wiki/Lorem_ipsum", websites[0]),
+        createPage("https://en.wikipedia.org/wiki/Julius_Caesar", websites[0]),
+        createPage("https://n.wikipedia.org/wiki/Julius_Caesar", websites[0])
     ]);
 }
 
