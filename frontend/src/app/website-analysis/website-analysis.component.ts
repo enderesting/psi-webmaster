@@ -55,7 +55,9 @@ export class WebsiteAnalysisComponent {
         }
       },
       colors: ["#1ab7ea", "#0084ff", "#39539E", "#0077B5"],
-      labels: ["Total page with error","Pages with 1+ AAA error","Pages with 1+ AA error","Pages with 1+ A error"],
+      labels: ["Total page with error","Pages with 1+ AAA error",
+                "Pages with 1+ AA error","Pages with 1+ A error",
+                "Pages with no errors"],
       legend: {
         show: true,
         floating: true,

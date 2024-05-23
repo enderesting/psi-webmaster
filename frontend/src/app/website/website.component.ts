@@ -39,7 +39,7 @@ export class WebsiteComponent {
   input: string = '';
   websitePattern:string = '';
   siteFormControl = new FormControl('', [Validators.required]);
-  stats: number[] = [0,0,0,0]
+  stats: number[] = [0,0,0,0,0]
 
   errorData: ErrorElement[] = []
 
@@ -134,6 +134,7 @@ export class WebsiteComponent {
       this.website.failedAAATotal/this.website.ratedTotal*100,
       this.website.failedAATotal/this.website.ratedTotal*100,
       this.website.failedATotal/this.website.ratedTotal*100,
+      (this.website.ratedTotal-this.website.failedAssertionsTotal)/this.website.ratedTotal*100
     ];
     return stats
   }
