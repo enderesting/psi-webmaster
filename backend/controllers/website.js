@@ -244,7 +244,7 @@ async function handlePageAssertions(fullUrl, urlAssertions, timestamp) {
                 assertion: qwAssertion._id
             })
             
-            // await elementResults.save();
+            await elementResults.save();
         }
 
         if (assertion.outcome == "failed") {
