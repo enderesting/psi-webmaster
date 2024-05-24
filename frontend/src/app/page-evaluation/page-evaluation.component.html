@@ -4,3 +4,70 @@
       {{page.pageURL}}
     </mat-list-item>
 </mat-list>
+
+<h1>Outcomes</h1>
+<mat-list>
+  <mat-list-item>
+    <span matListItemTitle style="color:#00BFA5">{{"Number of tests passed"}}</span>
+    {{page.totalPassed}} ({{passedPercentage}}%)
+  </mat-list-item>
+
+  <mat-list-item>
+    <span matListItemTitle style="color:#00BFA5">{{"Number of tests with warning"}}</span>
+    {{page.totalWarning}} ({{warningPercentage}}%)
+  </mat-list-item>
+
+  <mat-list-item>
+    <span matListItemTitle style="color:#00BFA5">{{"Number of tests failed"}}</span>
+    {{page.totalFailed}} ({{failedPercentage}}%)
+  </mat-list-item>
+
+  <mat-list-item>
+    <span matListItemTitle style="color:#00BFA5">{{"Number of tests not applicable"}}</span>
+    {{page.totalNotApplicable}} ({{notApplicablePercentage}}%)
+  </mat-list-item>
+</mat-list>
+
+<h1>Tests</h1>
+<mat-accordion>
+  <mat-expansion-panel *ngFor="let rule of rules">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{rule.code}}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{rule.outcome}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <!--><mat-list *ngFor="let element of rule.elementsAffected">
+      {{element}}
+    </mat-list><!-->
+
+    <mat-list>
+      <mat-list-item>
+        <span matListItemTitle style="color:#00BFA5">Description</span>
+        {{rule.description}}
+      </mat-list-item>
+
+      <mat-list-item>
+        <span matListItemTitle style="color:#00BFA5">Levels</span>
+        {{rule.levels.join(', ')}}
+      </mat-list-item>
+
+      <mat-list-item>
+        <span matListItemTitle style="color:#00BFA5">Elements Affected</span>
+        <mat-list *ngFor="let element of rule.elementsAffected">
+          <mat-list-item>{{element}}</mat-list-item>
+        </mat-list>
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<div class="back-button-container">
+  <button mat-fab color="accent" aria-label="Go back button" (click)="goBack()">
+    <mat-icon>keyboard_backspace</mat-icon>
+  </button>
+</div>
+
