@@ -21,7 +21,7 @@ const PageSchema = new Schema({
 
     rating: {
         type: String,
-        enum: ["Compliant", "Non-compliant"]
+        enum: ["Compliant", "Non-compliant", "Error in rating"]
     },
 
     failedAnyAssertion: {

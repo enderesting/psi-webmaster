@@ -20,8 +20,8 @@ const QWAssertionSchema = new Schema({
         enum: ["passed", "warning", "failed", "inapplicable"]
     },
 
-    level: {
-        type: String
+    levels: {
+        type: [String]
     },
 
     page: {
