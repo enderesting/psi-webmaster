@@ -30,16 +30,19 @@
 
 <h1>Tests</h1>
 
-<mat-chip-listbox selectable multiple #list>
-  <mat-chip-option
-      *ngFor="let module of ['act','wcag']"
-      [value]="module"
-      selected="true"
-      color="accent"
-  >
+<div class="container">
+  <mat-chip-listbox selectable multiple #list>
+    <mat-chip-option *ngFor="let module of ['act','wcag']" [value]="module" selected="true" color="accent">
       {{module}}
-  </mat-chip-option>
-</mat-chip-listbox>
+    </mat-chip-option>
+    <mat-chip-option *ngFor="let result of ['Passed','Warning','Failed','Not applicable']" [value]="result" selected="true" color="accent">
+      {{result}}
+    </mat-chip-option>
+    <mat-chip-option *ngFor="let level of ['A','AA','AAA']" [value]="level" selected="true" color="accent">
+      {{level}}
+    </mat-chip-option>
+  </mat-chip-listbox>
+</div>
 
 <mat-accordion>
   <mat-expansion-panel *ngFor="let rule of rules">
