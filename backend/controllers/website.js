@@ -69,47 +69,81 @@ exports.addPage = asyncHandler(async (req, res, next) => {
 })
 
 exports.deleteWebsite = asyncHandler(async (req, res, next) => {
-    const id = req.params.id;
+    const dbWebsiteId = req.params.id;
+    
+    // const dbPages = await Page.find({website: dbWebsiteId})
 
-    await Website.findByIdAndDelete(id)
+    // const dbAssertions = []
+    // for (const dbPage of dbPages) {
+    //     const pageDBAssertions = await QWAssertion.find
+    //     dbAssertions = dbAssertions.concat()
+    // }
+
+    await Website.findByIdAndDelete(dbWebsiteId)
         .then(data => {
-            if (!data)
-                res.status(404).json( {message: `Cannot delete Website with id=${id}.`});
-            else
-                res.json( {message: "Website was deleted successfully!"});
-        })
-        .catch(err => {
+            if (!data) {
+                res.status(404).json({ 
+                    message: `Cannot delete Website with id=${dbWebsiteId}.`
+                });
+            }
+            else {
+                res.json({ message: "Website was deleted successfully!" });
+            }
+        }).catch(err => {
             res.status(500).json({
-                message: "Could not delete Website with id=" + id
+                message: "Could not delete Website with id=" + dbWebsiteId
             });
         });
 });
 
 exports.deletePages = asyncHandler(async (req, res, next) => {
     // FIXME(flip) Deleting page should trigger the assertions to delete too!
+    console.log(req.body)
     const pagesToDelete = req.query.urls.split(',');
     const website = await Website.findOne({ _id: req.params.id }).exec();
     const monitoredPages = await Page.find({ website: website._id }).exec();
     const deletedPages = [];
 
-    for(const i in monitoredPages) {
+    let totalRatedDeleted = 0
+    let totalFailedAnyDeleted = 0
+    let totalFailedADeleted = 0
+    let totalFailedAADeleted = 0
+    let totalFailedAAADeleted = 0
+
+    for (const i in monitoredPages) {
         const page = monitoredPages[i];
-        if(pagesToDelete.includes(page.pageURL)){
+        if (pagesToDelete.includes(page.pageURL)) {
             const id = page._id;
-            await Page.findByIdAndDelete(id)
-                .then(data => {
-                    if (!data)
-                        res.status(404).json( {message: `Could not delete Page with id=${id}.`});
-                    else
-                        deletedPages.push(page);
-                })
-                .catch(err => {
-                    res.status(500).json({
+            await Page.findByIdAndDelete(id).then(data => {
+                if (!data) {
+                    res.status(404).json({
                         message: `Could not delete Page with id=${id}.`
                     });
+                } else {
+                    if (page.rating != "Error in rating") totalRatedDeleted++
+                    if (page.failedAnyAssertion) totalFailedAnyDeleted++
+                    if (page.failedA) totalFailedADeleted++
+                    if (page.failedAA) totalFailedAADeleted++
+                    if (page.failedAAA) totalFailedAAADeleted++
+                    deletedPages.push(page);
+                }
+
+            }).catch(err => {
+                res.status(500).json({
+                    message: `Could not delete Page with id=${id}.`
                 });
+            });
         }
     }
+    
+    website.ratedTotal -= totalRatedDeleted
+    website.failedAssertionsTotal -= totalFailedAnyDeleted
+    website.failedATotal -= totalFailedADeleted
+    website.failedAATotal -= totalFailedAADeleted
+    website.failedAAATotal -= totalFailedAAADeleted
+
+    if (website.ratedTotal == 0) website.ratingStatus = "To be rated"
+    await website.save()
 
     res.status(200).json(deletedPages);
 })
