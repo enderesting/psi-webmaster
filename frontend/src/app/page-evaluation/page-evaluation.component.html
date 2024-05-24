@@ -9,26 +9,38 @@
 <mat-list>
   <mat-list-item>
     <span matListItemTitle style="color:#00BFA5">{{"Number of tests passed"}}</span>
-    {{page.totalPassed}} ({{passedPercentage}}%)
+    {{page.totalPassed ?? 0}} ({{passedPercentage}}%)
   </mat-list-item>
 
   <mat-list-item>
     <span matListItemTitle style="color:#00BFA5">{{"Number of tests with warning"}}</span>
-    {{page.totalWarning}} ({{warningPercentage}}%)
+    {{page.totalWarning ?? 0}} ({{warningPercentage}}%)
   </mat-list-item>
 
   <mat-list-item>
     <span matListItemTitle style="color:#00BFA5">{{"Number of tests failed"}}</span>
-    {{page.totalFailed}} ({{failedPercentage}}%)
+    {{page.totalFailed ?? 0}} ({{failedPercentage}}%)
   </mat-list-item>
 
   <mat-list-item>
     <span matListItemTitle style="color:#00BFA5">{{"Number of tests not applicable"}}</span>
-    {{page.totalNotApplicable}} ({{notApplicablePercentage}}%)
+    {{page.totalNotApplicable ?? 0}} ({{notApplicablePercentage}}%)
   </mat-list-item>
 </mat-list>
 
 <h1>Tests</h1>
+
+<mat-chip-listbox selectable multiple #list>
+  <mat-chip-option
+      *ngFor="let module of ['act','wcag']"
+      [value]="module"
+      selected="true"
+      color="accent"
+  >
+      {{module}}
+  </mat-chip-option>
+</mat-chip-listbox>
+
 <mat-accordion>
   <mat-expansion-panel *ngFor="let rule of rules">
     <mat-expansion-panel-header>
