@@ -32,10 +32,17 @@ export interface Page {
     pageURL: string;
     lastRated?: Date;
     rating: RatingResult;
+    failedA?: boolean;
+    failedAA?: boolean;
+    failedAAA?: boolean;
+    totalTests?: number;
+    totalPassed?: number;
+    totalWarning?: number;
+    totalFailed?: number;
+    totalNotApplicable?: number;
 }
 
 export interface ErrorElement {
     rank: number;
     errorName: string;
 }
-  
