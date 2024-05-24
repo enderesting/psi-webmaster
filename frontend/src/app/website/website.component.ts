@@ -28,6 +28,7 @@ export class WebsiteComponent {
     this.websiteService.getWebsiteById(id)
       .subscribe(website => {
         this.website = website;
+        this.count = this.getCount()
         this.stats = this.calculateStats();
         this.errorData = this.calculateError();
         console.log(this.website.commonErrors);
@@ -41,7 +42,8 @@ export class WebsiteComponent {
   input: string = '';
   websitePattern:string = '';
   siteFormControl = new FormControl('', [Validators.required]);
-  stats: number[] = [0,0,0,0]
+  count: number[] = [0,0,0,0,0]
+  stats: number[] = [0,0,0,0,0]
 
   errorData: ErrorElement[] = []
 
@@ -136,6 +138,17 @@ export class WebsiteComponent {
   goBack(): void {
     this.location.back();
   }
+  getCount() : number[]{
+    const count= [
+      this.website.failedAssertionsTotal,
+      this.website.failedAAATotal,
+      this.website.failedAATotal,
+      this.website.failedATotal,
+      this.website.ratedTotal
+    ];
+    return count
+
+  }
 
   calculateStats(): number[] {
     const stats= [
@@ -143,6 +156,7 @@ export class WebsiteComponent {
       this.website.failedAAATotal/this.website.ratedTotal*100,
       this.website.failedAATotal/this.website.ratedTotal*100,
       this.website.failedATotal/this.website.ratedTotal*100,
+      (this.website.ratedTotal-this.website.failedAssertionsTotal)/this.website.ratedTotal*100
     ];
     return stats
   }

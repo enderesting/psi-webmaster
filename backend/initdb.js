@@ -2,13 +2,15 @@ const mongoose = require('mongoose');
 
 const WebsiteModel = require('./models/website');
 const PageModel = require('./models/page');
-const QWAssertionModel = require('./models/qwAssertion')
+const QWAssertionModel = require('./models/qwAssertion').qwAssertionModel
+const ElementResultsModel = require('./models/elementResults')
 
 let websites = []
 let pages = []
 let qwAssertions = []
 
 async function main() {
+    await deleteElementResults()
     await deleteQWAssertions();
     await deletePages();
     await deleteWebsites();
@@ -32,6 +34,8 @@ async function createWebsite(url) {
 async function createPages() {
     await Promise.all([
         createPage("https://en.wikipedia.org/wiki/Lorem_ipsum", websites[0]),
+        createPage("https://en.wikipedia.org/wiki/Julius_Caesar", websites[0]),
+        createPage("https://n.wikipedia.org/wiki/Julius_Caesar", websites[0])
     ]);
 }
 
@@ -42,6 +46,10 @@ async function createPage(url, websiteDocument) {
     });
     await page.save();
     pages.push(page);
+}
+
+async function deleteElementResults() {
+    await ElementResultsModel.deleteMany({});
 }
 
 async function deleteQWAssertions() {

@@ -1,7 +1,8 @@
 const asyncHandler = require('express-async-handler');
 const Website = require('../models/website');
 const Page = require('../models/page');
-const QWAssertion = require('../models/qwAssertion')
+const QWAssertion = require('../models/qwAssertion').qwAssertionModel
+const ElementResults = require('../models/elementResults')
 const qw = require('../qualweb');
 
 exports.getWebsite = asyncHandler(async (req, res, next) => {
@@ -85,6 +86,7 @@ exports.deleteWebsite = asyncHandler(async (req, res, next) => {
 });
 
 exports.deletePages = asyncHandler(async (req, res, next) => {
+    // FIXME(flip) Deleting page should trigger the assertions to delete too!
     const pagesToDelete = req.query.urls.split(',');
     const website = await Website.findOne({ _id: req.params.id }).exec();
     const monitoredPages = await Page.find({ website: website._id }).exec();
@@ -108,28 +110,26 @@ exports.deletePages = asyncHandler(async (req, res, next) => {
                 });
         }
     }
+
     res.status(200).json(deletedPages);
 })
 
 exports.requestRating = asyncHandler(async (req, res, next) => {
     const dbWebsite = await Website.findOne({ _id: req.params.id }).exec();
-    const websiteURL = dbWebsite.websiteURL;
 
     // Change website status
     dbWebsite.ratingStatus = "Being rated";
     await dbWebsite.save();
 
-    // res.status(201).json({ message: "Rating..." });
+    console.log("Assertion starts");
 
     // Generate accessability reports
     const urlAssertions = await qw.evaluateURLs(req.body.urls)
     const timestamp = Date.now();
-    console.log("Assertion starts");
 
     for (const fullUrl in urlAssertions) {
         console.log("Assertion for: " + fullUrl);
-        await handlePageAssertions(fullUrl, websiteURL, urlAssertions, 
-            timestamp);
+        await handlePageAssertions(fullUrl, urlAssertions, timestamp);
     }
 
     // Update associated website's mongo document
@@ -164,47 +164,104 @@ exports.requestRating = asyncHandler(async (req, res, next) => {
     dbWebsite.failedAAATotal = totalOfAAAFailed;
     dbWebsite.commonErrors = common10Errors;
     dbWebsite.lastRated = timestamp;
-    dbWebsite.ratingStatus = "Rated";
-    console.log("Save Website Status");
 
+    if (totalOfFailed > 0) {
+        dbWebsite.rating = "Error"
+    } else if (dbPagesFromWebsite.length - totalRated > 0) {
+        dbWebsite.rating = "Being rated"
+    } else {
+        dbWebsite.rating = "Rated"
+    }
+
+    console.log("Save Website Status");
     await dbWebsite.save();
     res.status(201).json({ message: "Rated" });
 })
 
-async function handlePageAssertions(fullUrl, websiteURL, urlAssertions,
-        timestamp) {
-    // const pageUrl = fullUrl.replace(websiteURL + "/", "");
-    // console.log(pageUrl);
-    const dbPage = await Page.findOne({ pageURL: fullUrl }).exec(); // struggling to find anything here
+async function handlePageAssertions(fullUrl, urlAssertions, timestamp) {
     // Delete previous assertions for this page
+    const dbPage = await Page.findOne({ pageURL: fullUrl }).exec(); 
+    const dbAssertions = await QWAssertion.find({ page: dbPage._id}).exec();
+
+    for (const dbAssertion in dbAssertions) {
+        await ElementResults.deleteMany({ 
+            assertion: dbAssertions[dbAssertion]._id 
+        }).exec();
+    }
+
     await QWAssertion.deleteMany({ page: dbPage._id }).exec();
 
     let anyFailed = false;
     let anyAFailed = false;
     let anyAAFailed = false;
     let anyAAAFailed = false;
-    let finalRating = "Compliant";
 
+    let totalTests = 0
+    let totalPassed = 0
+    let totalWarning = 0
+    let totalFailed = 0
+    let totalNotApplicable = 0
+
+    // Flag the page in case of a rating error
+    if (urlAssertions[fullUrl].error) {
+        dbPage.failedAnyAssertion = false;
+        dbPage.failedA = false;
+        dbPage.failedAA = false;
+        dbPage.failedAAA = false;
+        dbPage.lastRated = timestamp;
+        dbPage.rating = "Error in rating";
+        await dbPage.save();
+        return;
+    }
+
+    let c = 0;
     // Add the new assertions
-    const assertions = urlAssertions[fullUrl];
+    const assertions = urlAssertions[fullUrl].rules;
     for (const assertion of assertions) {
         const qwAssertion = QWAssertion({
             module: assertion.module,
             code: assertion.code,
             outcome: assertion.outcome,
-            page: dbPage._id
+            description: assertion.description,
+            page: dbPage._id,
+            levels: [],
+            results: []
         });
-        if (assertion.level) { qwAssertion.level = assertion.level; }
+
+        for (const level of assertion.levels) {
+            if (!qwAssertion.levels.includes(level)) {
+                qwAssertion.levels.push(level)
+            }
+        }
 
         await qwAssertion.save();
 
-        if (assertion.outcome == "failed") {
-            anyFailed = true;
-            finalRating = "Non-compliant";
-            if (assertion.level == "A") { anyAFailed = true; }
-            if (assertion.level == "AA") { anyAAFailed = true; }
-            if (assertion.level == "AAA") { anyAAAFailed = true; }
+        // Save elements for this assertion
+        for (const result of assertion.results) {
+            const elementResults = ElementResults({
+                verdict: result.verdict,
+                elements: result.elements,
+                assertion: qwAssertion._id
+            })
+            
+            await elementResults.save();
         }
+
+        if (assertion.outcome == "failed") {
+            totalFailed++
+            anyFailed = true;
+            if (assertion.levels.includes("A")) { anyAFailed = true; }
+            if (assertion.levels.includes("AA")) { anyAAFailed = true; }
+            if (assertion.levels.includes("AAA")) { anyAAAFailed = true; }
+        } else if (assertion.outcome == "warning") {
+            totalWarning++
+        } else if (assertion.outcome == "inapplicable") {
+            totalNotApplicable++
+        } else if (assertion.outcome == "passed") {
+            totalPassed++
+        }
+
+        totalTests++
     }
 
     // Update the associated page
@@ -212,8 +269,13 @@ async function handlePageAssertions(fullUrl, websiteURL, urlAssertions,
     dbPage.failedA = anyAFailed;
     dbPage.failedAA = anyAAFailed;
     dbPage.failedAAA = anyAAAFailed;
+    dbPage.totalTests = totalTests;
+    dbPage.totalPassed = totalPassed;
+    dbPage.totalWarning = totalWarning;
+    dbPage.totalFailed = totalFailed;
+    dbPage.totalNotApplicable = totalNotApplicable
     dbPage.lastRated = timestamp;
-    dbPage.rating = finalRating;
+    dbPage.rating = anyAFailed || anyAAFailed ? "Non-compliant" : "Compliant";
     await dbPage.save();
 }
 

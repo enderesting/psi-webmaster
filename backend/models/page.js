@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const QWAssertionSchema = require("./qwAssertion").qwAssertionSchema
 
 const Schema = mongoose.Schema;
 
@@ -21,7 +22,7 @@ const PageSchema = new Schema({
 
     rating: {
         type: String,
-        enum: ["Compliant", "Non-compliant"]
+        enum: ["Compliant", "Non-compliant", "Error in rating"]
     },
 
     failedAnyAssertion: {
@@ -38,6 +39,26 @@ const PageSchema = new Schema({
 
     failedAAA: {
         type: Boolean
+    },
+    
+    totalTests: {
+        type: Number
+    },
+
+    totalPassed: {
+        type: Number
+    },
+
+    totalWarning: {
+        type: Number
+    },
+
+    totalFailed: {
+        type: Number
+    },
+
+    totalNotApplicable: {
+        type: Number
     }
 });
 
