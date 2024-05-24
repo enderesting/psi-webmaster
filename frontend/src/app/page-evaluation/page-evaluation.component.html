@@ -61,26 +61,36 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <h3>Description</h3>
-    <span>{{rule.description}}</span>
+    <mat-list>
+      <mat-list-item>
+        <span matListItemTitle style="color:#00BFA5">Description</span>
+        {{rule.description}}
+      </mat-list-item>
 
-    <h3>Levels</h3>
-    <span>{{rule.levels.join(', ')}}</span>
+      <mat-list-item>
+        <span matListItemTitle style="color:#00BFA5">Levels</span>
+        {{rule.levels.join(', ')}}
+      </mat-list-item>
 
-    <h3>Elements Affected</h3>
-    <cdk-virtual-scroll-viewport itemSize="100" class="viewport">
-      <div *cdkVirtualFor="let element of rule.elementsAffected" class="element-container">
-        <mat-card [ngClass]="{'passed': element.verdict === 'passed', 'warning': element.verdict === 'warning', 'failed': element.verdict === 'failed'}" class="verdict-card">
-          <div class="verdict-content">
-            <strong>Verdict:</strong> {{element.verdict}}
-            <div *ngFor="let elem of element.elements" class="code-block">
-              <code>{{elem}}</code>
+    <mat-list-item>
+      
+      <span matListItemTitle style="color:#00BFA5">Elements Affected</span>
+    </mat-list-item>
+
+      <cdk-virtual-scroll-viewport itemSize="100" class="viewport">
+        <div *cdkVirtualFor="let element of rule.elementsAffected" class="element-container">
+          <mat-card [ngClass]="{'passed': element.verdict === 'passed', 'warning': element.verdict === 'warning', 'failed': element.verdict === 'failed'}" class="verdict-card">
+            <div class="verdict-content">
+              <strong>Verdict:</strong> {{element.verdict}}
+              <div *ngFor="let elem of element.elements" class="code-block">
+                <code>{{elem}}</code>
+              </div>
             </div>
-          </div>
-        </mat-card>
-      </div>
-    </cdk-virtual-scroll-viewport>
-    
+          </mat-card>
+        </div>
+      </cdk-virtual-scroll-viewport>
+
+    </mat-list>
   </mat-expansion-panel>
 </mat-accordion>
 
