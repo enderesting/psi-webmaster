@@ -40,7 +40,7 @@ export interface Page {
     totalWarning?: number;
     totalFailed?: number;
     totalNotApplicable?: number;
-    rules?: QWAssertion[]
+    assertions?: QWAssertion[]
 }
 
 export interface ErrorElement {
@@ -62,14 +62,4 @@ export interface QWAssertion {
 export interface AffectedElement{
     verdict : string;
     elements: string[];
-}
-
-export interface PageReport{
-    pageURL : string;
-    totalTests?: number;
-    totalPassed?: number;
-    totalWarning?: number;
-    totalFailed?: number;
-    totalNotApplicable?: number;
-    assertions : QWAssertion;
 }

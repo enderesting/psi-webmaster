@@ -14,37 +14,7 @@ import { FormControl } from '@angular/forms';
 export class PageEvaluationComponent {
 
   page!: Page;
-  rules!: QWAssertion[];
-
-  mockElem1: AffectedElement = {
-    verdict: "passed",
-    elements: ['<a href=\"/w/index.php?title=End-to-end_encryption&amp;action=edit&amp;section=11\" title=\"Edit section: References\">edit</a>', 'elem2'],
-  }
-  mockElem2: AffectedElement = {
-    verdict: "warning",
-    elements: ['elem2', 'elem3'],
-  }
-  mockRules: QWAssertion[] = [
-    {
-      code: 'rule1',
-      outcome: 'Passed',
-      description: 'Description for rule1',
-      levels: ['A'],
-      elementsAffected: [this.mockElem1,this.mockElem2],
-      module: 'act',
-      page: this.page
-
-    },
-    {
-      code: 'rule2',
-      outcome: 'Failed',
-      description: 'Description for rule2',
-      levels: ['AA', 'AAA'],
-      elementsAffected: [this.mockElem1],
-      module: 'wcag',
-      page: this.page
-    }
-  ];
+  assertions!: QWAssertion[];
 
   passedPercentage!: number;
   warningPercentage!: number;
@@ -61,20 +31,11 @@ export class PageEvaluationComponent {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.websiteService.getPageEvaluationById(id)
-      .subscribe(pageReport => {
-        this.page = pageReport;
-        // this.page.pageURL = pageReport.pageURL;
-        // this.page.totalFailed = pageReport.totalFailed;
-        // this.page.totalPassed = pageReport.totalPassed;
-        // this.page.totalWarning = pageReport.totalWarning;
-        // this.page.totalFailed = pageReport.totalFailed;
-        // this.page.totalNotApplicable = pageReport.totalNotApplicable;
-
-
-        //this.rules = page.rules ?? [];
-        this.rules = this.mockRules;
-        console.log("this.rules[0].elementsAffected[0].verdict: " + this.rules[0].elementsAffected[0].verdict);
-        this.filterRules();
+      .subscribe(page => {
+        this.page = page;
+        this.assertions = page.assertions ?? [];
+        //this.filteredAssertions = this.assertions;
+        this.applyFilter();
 
         this.passedPercentage = this.calculatePercentage(this.page?.totalPassed ?? 0);
         this.warningPercentage = this.calculatePercentage(this.page?.totalWarning ?? 0);
@@ -93,14 +54,14 @@ export class PageEvaluationComponent {
   }
 
   modules = ['act', 'wcag'];
-  results = ['Passed', 'Warning', 'Failed', 'Not applicable'];
+  results = ['passed', 'warning', 'failed', 'not applicable'];
   levels = ['A', 'AA', 'AAA'];
 
   selectedModules: String[] = this.modules;
   selectedResults: String[] = this.results;
   selectedLevels: String[] = this.levels;
 
-  filteredRules: QWAssertion[] = [];
+  filteredAssertions: QWAssertion[] = [];
 
   setFilter(event:MatChipListboxChange, filterType: string) {
     var listbox: MatChipOption | MatChipOption[] = event.source.selected;
@@ -119,14 +80,14 @@ export class PageEvaluationComponent {
     else if (filterType === 'level')
       this.selectedLevels = values;
 
-    this.filterRules();
+    this.applyFilter();
   }
 
-  filterRules() {
-    this.filteredRules = this.rules.filter(rule => {
-      return this.selectedModules.includes(rule.module) &&
-        this.selectedResults.includes(rule.outcome) &&
-        rule.levels.some(level => this.selectedLevels.includes(level));
+  applyFilter() {
+    this.filteredAssertions = this.assertions.filter(assertion => {
+      return this.selectedModules.includes(assertion.module) &&
+        this.selectedResults.includes(assertion.outcome) &&
+        assertion.levels.some(level => this.selectedLevels.includes(level));
     });
   }
 
