@@ -64,9 +64,7 @@ export class PageEvaluationComponent {
       .subscribe(page => {
         this.page = page;
         this.assertions = page.assertions ?? [];
-        console.log(this.assertions)
-        //this.rules = this.mockRules;
-        //console.log("this.rules[0].elementsAffected[0].verdict: " + this.rules[0].elementsAffected[0].verdict);
+        //this.filteredAssertions = this.assertions;
         this.applyFilter();
 
         this.passedPercentage = this.calculatePercentage(this.page?.totalPassed ?? 0);
@@ -86,7 +84,7 @@ export class PageEvaluationComponent {
   }
 
   modules = ['act', 'wcag'];
-  results = ['Passed', 'Warning', 'Failed', 'Not applicable'];
+  results = ['passed', 'warning', 'failed', 'not applicable'];
   levels = ['A', 'AA', 'AAA'];
 
   selectedModules: String[] = this.modules;
