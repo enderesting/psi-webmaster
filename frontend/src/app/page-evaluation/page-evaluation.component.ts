@@ -14,7 +14,7 @@ import { FormControl } from '@angular/forms';
 export class PageEvaluationComponent {
 
   page!: Page;
-  rules!: QWAssertion[];
+  assertions!: QWAssertion[];
 
   mockElem1: AffectedElement = {
     verdict: "passed",
@@ -61,20 +61,13 @@ export class PageEvaluationComponent {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.websiteService.getPageEvaluationById(id)
-      .subscribe(pageReport => {
-        this.page = pageReport;
-        // this.page.pageURL = pageReport.pageURL;
-        // this.page.totalFailed = pageReport.totalFailed;
-        // this.page.totalPassed = pageReport.totalPassed;
-        // this.page.totalWarning = pageReport.totalWarning;
-        // this.page.totalFailed = pageReport.totalFailed;
-        // this.page.totalNotApplicable = pageReport.totalNotApplicable;
-
-
-        //this.rules = page.rules ?? [];
-        this.rules = this.mockRules;
-        console.log("this.rules[0].elementsAffected[0].verdict: " + this.rules[0].elementsAffected[0].verdict);
-        this.filterRules();
+      .subscribe(page => {
+        this.page = page;
+        this.assertions = page.assertions ?? [];
+        console.log(this.assertions)
+        //this.rules = this.mockRules;
+        //console.log("this.rules[0].elementsAffected[0].verdict: " + this.rules[0].elementsAffected[0].verdict);
+        this.applyFilter();
 
         this.passedPercentage = this.calculatePercentage(this.page?.totalPassed ?? 0);
         this.warningPercentage = this.calculatePercentage(this.page?.totalWarning ?? 0);
@@ -100,7 +93,7 @@ export class PageEvaluationComponent {
   selectedResults: String[] = this.results;
   selectedLevels: String[] = this.levels;
 
-  filteredRules: QWAssertion[] = [];
+  filteredAssertions: QWAssertion[] = [];
 
   setFilter(event:MatChipListboxChange, filterType: string) {
     var listbox: MatChipOption | MatChipOption[] = event.source.selected;
@@ -119,14 +112,14 @@ export class PageEvaluationComponent {
     else if (filterType === 'level')
       this.selectedLevels = values;
 
-    this.filterRules();
+    this.applyFilter();
   }
 
-  filterRules() {
-    this.filteredRules = this.rules.filter(rule => {
-      return this.selectedModules.includes(rule.module) &&
-        this.selectedResults.includes(rule.outcome) &&
-        rule.levels.some(level => this.selectedLevels.includes(level));
+  applyFilter() {
+    this.filteredAssertions = this.assertions.filter(assertion => {
+      return this.selectedModules.includes(assertion.module) &&
+        this.selectedResults.includes(assertion.outcome) &&
+        assertion.levels.some(level => this.selectedLevels.includes(level));
     });
   }
 

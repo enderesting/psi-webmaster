@@ -51,25 +51,25 @@
 </div>
 
 <mat-accordion>
-  <mat-expansion-panel *ngFor="let rule of filteredRules">
+  <mat-expansion-panel *ngFor="let assertion of filteredAssertions">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{rule.code}}
+        {{assertion.code}}
       </mat-panel-title>
       <mat-panel-description>
-        {{rule.outcome}}
+        {{assertion.outcome}}
       </mat-panel-description>
     </mat-expansion-panel-header>
 
     <h3>Description</h3>
-    <span>{{rule.description}}</span>
+    <span>{{assertion.description}}</span>
 
     <h3>Levels</h3>
-    <span>{{rule.levels.join(', ')}}</span>
+    <span>{{assertion.levels.join(', ')}}</span>
 
     <h3>Elements Affected</h3>
     <cdk-virtual-scroll-viewport itemSize="100" class="viewport">
-      <div *cdkVirtualFor="let element of rule.elementsAffected" class="element-container">
+      <div *cdkVirtualFor="let element of assertion.elementsAffected" class="element-container">
         <mat-card [ngClass]="{'passed': element.verdict === 'passed', 'warning': element.verdict === 'warning', 'failed': element.verdict === 'failed'}" class="verdict-card">
           <div class="verdict-content">
             <strong>Verdict:</strong> {{element.verdict}}
