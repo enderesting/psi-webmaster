@@ -40,9 +40,20 @@ export interface Page {
     totalWarning?: number;
     totalFailed?: number;
     totalNotApplicable?: number;
+    rules?: QWAssertion[]
 }
 
 export interface ErrorElement {
     rank: number;
     errorName: string;
+}
+
+export interface QWAssertion {
+    module: string;
+    code: string;
+    outcome: string;
+    levels: string[];
+    page: Page;
+    description: string;
+    elementsAffected: string[]
 }
