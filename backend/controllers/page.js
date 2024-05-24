@@ -4,5 +4,6 @@ const QWAssertion = require('../models/qwAssertion')
 const qw = require('../qualweb');
 
 exports.getPageEvaluation = asyncHandler(async (req, res, next) => {
-    res.status(501);
+    const page = await Page.findOne({ _id: req.params.id }).exec();
+    res.status(200).json(page);
 });
