@@ -31,21 +31,27 @@
 <h1>Tests</h1>
 
 <div class="container">
-  <mat-chip-listbox selectable multiple #list>
-    <mat-chip-option *ngFor="let module of ['act','wcag']" [value]="module" selected="true" color="accent">
+  <mat-chip-listbox selectable multiple #list (change)="setFilter($event,'module')">
+    <mat-chip-option *ngFor="let module of modules" [value]="module" selected="true" color="accent">
       {{module}}
     </mat-chip-option>
-    <mat-chip-option *ngFor="let result of ['Passed','Warning','Failed','Not applicable']" [value]="result" selected="true" color="accent">
+  </mat-chip-listbox>
+
+  <mat-chip-listbox selectable multiple #list (change)="setFilter($event,'result')">
+    <mat-chip-option *ngFor="let result of results" [value]="result" selected="true" color="accent">
       {{result}}
     </mat-chip-option>
-    <mat-chip-option *ngFor="let level of ['A','AA','AAA']" [value]="level" selected="true" color="accent">
+  </mat-chip-listbox>
+  
+  <mat-chip-listbox selectable multiple #list (change)="setFilter($event,'level')">
+    <mat-chip-option *ngFor="let level of levels" [value]="level" selected="true" color="accent">
       {{level}}
     </mat-chip-option>
   </mat-chip-listbox>
 </div>
 
 <mat-accordion>
-  <mat-expansion-panel *ngFor="let rule of rules">
+  <mat-expansion-panel *ngFor="let rule of filteredRules">
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{rule.code}}
