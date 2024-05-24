@@ -72,12 +72,24 @@
         {{rule.levels.join(', ')}}
       </mat-list-item>
 
-      <mat-list-item>
-        <span matListItemTitle style="color:#00BFA5">Elements Affected</span>
-        <mat-list *ngFor="let element of rule.elementsAffected">
-          <mat-list-item>{{element}}</mat-list-item> <!-- works if matListItemTitle is included -->
-        </mat-list>
-      </mat-list-item>
+    <mat-list-item>
+      
+      <span matListItemTitle style="color:#00BFA5">Elements Affected</span>
+    </mat-list-item>
+
+      <cdk-virtual-scroll-viewport itemSize="100" class="viewport">
+        <div *cdkVirtualFor="let element of rule.elementsAffected" class="element-container">
+          <mat-card [ngClass]="{'passed': element.verdict === 'passed', 'warning': element.verdict === 'warning', 'failed': element.verdict === 'failed'}" class="verdict-card">
+            <div class="verdict-content">
+              <strong>Verdict:</strong> {{element.verdict}}
+              <div *ngFor="let elem of element.elements" class="code-block">
+                <code>{{elem}}</code>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </cdk-virtual-scroll-viewport>
+
     </mat-list>
   </mat-expansion-panel>
 </mat-accordion>

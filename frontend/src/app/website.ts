@@ -49,11 +49,27 @@ export interface ErrorElement {
 }
 
 export interface QWAssertion {
+    // add pageURL, stuff later
     module: string;
     code: string;
     outcome: string;
     levels: string[];
     page: Page;
     description: string;
-    elementsAffected: string[]
+    elementsAffected: AffectedElement[]
+}
+
+export interface AffectedElement{
+    verdict : string;
+    elements: string[];
+}
+
+export interface PageReport{
+    pageURL : string;
+    totalTests?: number;
+    totalPassed?: number;
+    totalWarning?: number;
+    totalFailed?: number;
+    totalNotApplicable?: number;
+    assertions : QWAssertion;
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SiteListComponent } from './site-list/site-list.component';
@@ -33,6 +34,7 @@ import { NgApexchartsModule } from "ng-apexcharts";
 import { ChartInfoComponent } from './chart-info/chart-info.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { PageEvaluationComponent } from './page-evaluation/page-evaluation.component';
+import {MatCardModule} from '@angular/material/card'; 
 
 @NgModule({
     declarations: [
@@ -74,6 +76,8 @@ import { PageEvaluationComponent } from './page-evaluation/page-evaluation.compo
         MatSnackBarModule,
         MatExpansionModule,
         NgApexchartsModule,
+        ScrollingModule,
+        MatCardModule,
     ]
 })
 export class AppModule { }

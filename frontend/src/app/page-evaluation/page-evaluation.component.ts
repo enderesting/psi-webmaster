@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Website, RatingStatus, RatingResult, Page, ErrorElement, QWAssertion} from '../website';
+import { Website, RatingStatus, RatingResult, Page, ErrorElement, QWAssertion, AffectedElement} from '../website';
 import { WebsiteService } from '../website.service';
 import { Location } from '@angular/common';
 import { MatChipListboxChange, MatChipOption } from '@angular/material/chips';
@@ -16,22 +16,31 @@ export class PageEvaluationComponent {
   page!: Page;
   rules!: QWAssertion[];
 
+  mockElem1: AffectedElement = {
+    verdict: "passed",
+    elements: ['<a href=\"/w/index.php?title=End-to-end_encryption&amp;action=edit&amp;section=11\" title=\"Edit section: References\">edit</a>', 'elem2'],
+  }
+  mockElem2: AffectedElement = {
+    verdict: "warning",
+    elements: ['elem2', 'elem3'],
+  }
   mockRules: QWAssertion[] = [
     {
       code: 'rule1',
       outcome: 'Passed',
       description: 'Description for rule1',
       levels: ['A'],
-      elementsAffected: ['element1', 'element2'],
+      elementsAffected: [this.mockElem1,this.mockElem2],
       module: 'act',
       page: this.page
+
     },
     {
       code: 'rule2',
       outcome: 'Failed',
       description: 'Description for rule2',
       levels: ['AA', 'AAA'],
-      elementsAffected: ['element3'],
+      elementsAffected: [this.mockElem1],
       module: 'wcag',
       page: this.page
     }
@@ -41,6 +50,7 @@ export class PageEvaluationComponent {
   warningPercentage!: number;
   failedPercentage!: number;
   notApplicablePercentage!: number;
+  items!: [1,2,3,4,5];
 
   constructor(
     private route: ActivatedRoute,
@@ -51,11 +61,19 @@ export class PageEvaluationComponent {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.websiteService.getPageEvaluationById(id)
-      .subscribe(page => {
-        this.page = page;
+      .subscribe(pageReport => {
+        this.page = pageReport;
+        // this.page.pageURL = pageReport.pageURL;
+        // this.page.totalFailed = pageReport.totalFailed;
+        // this.page.totalPassed = pageReport.totalPassed;
+        // this.page.totalWarning = pageReport.totalWarning;
+        // this.page.totalFailed = pageReport.totalFailed;
+        // this.page.totalNotApplicable = pageReport.totalNotApplicable;
+
+
         //this.rules = page.rules ?? [];
         this.rules = this.mockRules;
-
+        console.log("this.rules[0].elementsAffected[0].verdict: " + this.rules[0].elementsAffected[0].verdict);
         this.filterRules();
 
         this.passedPercentage = this.calculatePercentage(this.page?.totalPassed ?? 0);
@@ -111,4 +129,6 @@ export class PageEvaluationComponent {
         rule.levels.some(level => this.selectedLevels.includes(level));
     });
   }
+
+  
 }
