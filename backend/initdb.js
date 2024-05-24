@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const WebsiteModel = require('./models/website');
 const PageModel = require('./models/page');
-const QWAssertionModel = require('./models/qwAssertion')
+const QWAssertionModel = require('./models/qwAssertion').qwAssertionModel
 
 let websites = []
 let pages = []
