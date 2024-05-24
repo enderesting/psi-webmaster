@@ -30,10 +30,10 @@ const QWAssertionSchema = new Schema({
         required: true
     },
 
-   //  description: {
-   //      type: String,
-   //      required: true
-   //  },
+   description: {
+       type: String,
+       required: true
+   },
 
    //  elementsAffected: {
    //      type: [String],

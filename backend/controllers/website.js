@@ -212,11 +212,13 @@ async function handlePageAssertions(fullUrl, urlAssertions, timestamp) {
             module: assertion.module,
             code: assertion.code,
             outcome: assertion.outcome,
+            description: assertion.description,
             page: dbPage._id,
-            levels: []
+            levels: [],
+            results: []
         });
 
-        for (const level in assertion.levels) {
+        for (const level of assertion.levels) {
             if (!qwAssertion.levels.includes(level)) {
                 qwAssertion.levels.push(level)
             }
@@ -247,6 +249,7 @@ async function handlePageAssertions(fullUrl, urlAssertions, timestamp) {
     dbPage.failedAA = anyAAFailed;
     dbPage.failedAAA = anyAAAFailed;
     dbPage.totalTests = totalTests;
+    dbPage.totalPassed = totalPassed;
     dbPage.totalWarning = totalWarning;
     dbPage.totalFailed = totalFailed;
     dbPage.totalNotApplicable = totalNotApplicable
