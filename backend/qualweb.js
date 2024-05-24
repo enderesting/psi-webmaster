@@ -67,14 +67,31 @@ parseEARLModule = (module, moduleName) => {
         const rule = module[ruleName];
         const parsedRule = {
             module: moduleName,
+            description: rule.name,
             code: rule.code,
             outcome: rule.metadata.outcome,
-            levels: []
+            levels: [],
+            results: []
         }
 
         if (rule.metadata["success-criteria"] != null) {
             for (const criteria of rule.metadata["success-criteria"]) {
                 parsedRule.levels.push(criteria.level)
+            }
+        }
+
+        if (rule.results != null) {
+            for (const resultObj of rule.results) {
+                const cleanResultObj = {
+                    verdict: resultObj.verdict,
+                    elements: []
+                }
+                
+                for (const elementObj of resultObj.elements) {
+                    cleanResultObj.elements.push(elementObj.htmlCode)
+                }
+
+                parsedRule.results.push(cleanResultObj)
             }
         }
         
