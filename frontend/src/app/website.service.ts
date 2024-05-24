@@ -71,6 +71,11 @@ export class WebsiteService {
     return this.http.post<Page[]>(url,pageURLs,this.httpOptions);
   }
 
+  getPageEvaluationById(id: string) : Observable<Page> {
+    const url = `${this.pageURL}/${id}`;
+    return this.http.get<Page>(url,this.httpOptions);
+  }
+
   /** error handling */
   private handleError<T>(operation = 'operation', result?: T) {
 		return (error: any): Observable<T> => {
