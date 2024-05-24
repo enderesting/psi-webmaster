@@ -1,6 +1,8 @@
 import { WebsiteService } from '../website.service';
-import { Component, Input, ViewChild } from "@angular/core";
+import { Component, ElementRef, Input, SimpleChanges, ViewChild } from "@angular/core";
 import { ErrorElement } from '../website';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import {
   ApexDataLabels,
   ApexLegend,
@@ -9,6 +11,7 @@ import {
   ApexResponsive,
   ApexChart,
   ApexPlotOptions,
+  ApexTitleSubtitle,
 } from "ng-apexcharts";
 
 
@@ -18,10 +21,24 @@ import {
   styleUrls: ['./website-analysis.component.css']
 })
 export class WebsiteAnalysisComponent {
+  @ViewChild('htmlData') htmlData!: ElementRef;
   @ViewChild("chart") chart: ChartComponent = {} as ChartComponent;
+  @Input() websiteName : string = '';
   @Input() stats: number[] = [];
+  @Input() count: number[] = [];
   @Input() dataSource : ErrorElement[]= [];
   displayedColumns: string[] = ['rank','errorName'];
+
+  failedAssertionsTotal: number = 0;
+  failedAAATotal: number = 0;
+  failedAATotal: number = 0;
+  failedATotal: number = 0;
+  ratedTotal: number = 0;
+
+  failedAssertionsPercentage: number = 0;
+  failedAAAPercentage: number = 0;
+  failedAAPercentage: number = 0;
+  failedAPercentage: number = 0;
 
   public chartOptions: Partial<ChartOptions>;
 
@@ -35,12 +52,12 @@ export class WebsiteAnalysisComponent {
       },
       plotOptions: {
         radialBar: {
-          offsetY: 0,
+          // offsetY: 0,
           startAngle: 0,
-          endAngle: 270,
+          endAngle: 360,
           hollow: {
             margin: 5,
-            size: "30%",
+            size: "40%",
             background: "transparent",
             image: undefined
           },
@@ -62,18 +79,22 @@ export class WebsiteAnalysisComponent {
         show: true,
         floating: true,
         fontSize: "16px",
-        position: "left",
-        offsetX: -30,
-        offsetY: 70,
+        // position: "top",
+        offsetX: 100,
+        offsetY: 100,
+        horizontalAlign: 'center', 
         labels: {
-          useSeriesColors: true
+          useSeriesColors: true,
         },
         formatter: function(seriesName, opts) {
-          return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
+          return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex] + "%"
         },
         itemMargin: {
-          horizontal: 1
-        }
+          horizontal: 5,
+          vertical: 0,
+        },
+        // height: 100,
+        // width: 500,
       },
       responsive: [
         {
@@ -87,6 +108,46 @@ export class WebsiteAnalysisComponent {
       ]
     };
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['stats']) {
+      this.updateStats();
+    }
+  }
+
+
+  public openPDF(): void {
+    let DATA: any = document.getElementById('htmlData');
+    html2canvas(DATA).then((canvas) => {
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;
+      const FILEURI = canvas.toDataURL('image/png');
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      let position = 0;     
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+      PDF.setTextColor(0,0,0);
+      // PDF.text(20, 40, 'This is red.');
+      PDF.save('website-report.pdf');
+    });
+  }
+
+  updateStats(): void {
+    this.failedAssertionsTotal = this.count[0] || 0;
+    this.failedAAATotal = this.count[1] || 0;
+    this.failedAATotal = this.count[2] || 0;
+    this.failedATotal = this.count[3] || 0;
+    this.ratedTotal = this.count[4] || 0;
+
+    this.failedAssertionsPercentage = this.calculatePercentage(this.failedAssertionsTotal, this.ratedTotal);
+    this.failedAAAPercentage = this.calculatePercentage(this.failedAAATotal, this.ratedTotal);
+    this.failedAAPercentage = this.calculatePercentage(this.failedAATotal, this.ratedTotal);
+    this.failedAPercentage = this.calculatePercentage(this.failedATotal, this.ratedTotal);
+  }
+
+  calculatePercentage(failed: number, total: number): number {
+    return total > 0 ? (failed / total) * 100 : 0;
+  }
+
 }
 
 
@@ -96,8 +157,13 @@ export type ChartOptions = {
   responsive: ApexResponsive[];
   dataLabels: ApexDataLabels;
   labels: any;
-  // title: ApexTitleSubtitle;
+  title: ApexTitleSubtitle;
   legend: ApexLegend;
   plotOptions: ApexPlotOptions;
   colors: string[];
 };
+
+// function calculatePercentage(count: number, total : number) {
+//   return count / total
+// }
+

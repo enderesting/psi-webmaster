@@ -66,7 +66,9 @@
   <mat-tab label="Statistics">
 
     <app-website-analysis
+      [websiteName] = "this.website.websiteURL"
       [stats]="this.stats"
+      [count]="this.count"
       [dataSource]="this.errorData"
     ></app-website-analysis>
 
