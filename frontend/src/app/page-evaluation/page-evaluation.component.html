@@ -40,10 +40,6 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
 
-    <!--><mat-list *ngFor="let element of rule.elementsAffected">
-      {{element}}
-    </mat-list><!-->
-
     <mat-list>
       <mat-list-item>
         <span matListItemTitle style="color:#00BFA5">Description</span>
@@ -58,7 +54,7 @@
       <mat-list-item>
         <span matListItemTitle style="color:#00BFA5">Elements Affected</span>
         <mat-list *ngFor="let element of rule.elementsAffected">
-          <mat-list-item>{{element}}</mat-list-item>
+          <mat-list-item>{{element}}</mat-list-item> <!-- works if matListItemTitle is included -->
         </mat-list>
       </mat-list-item>
     </mat-list>
