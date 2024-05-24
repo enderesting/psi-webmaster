@@ -5,6 +5,7 @@ const QWAssertion = require('../models/qwAssertion').qwAssertionModel
 exports.getPage = asyncHandler(async (req, res, next) => {
     const dbPage = await Page.findOne({ _id: req.params.id }).exec();
     const dbQWAssertions = await QWAssertion.find({page: req.params.id}).exec()
+    const dbElementResults = await ElementResults.find({assertion: dbQWAssertions._id}).exec();
 
     const resQWAssertions = []
     for (const dbQWAssertion of dbQWAssertions) {
@@ -27,5 +28,19 @@ exports.getPage = asyncHandler(async (req, res, next) => {
     resPage.totalNotApplicable = dbPage.totalNotApplicable
     resPage.assertions = resQWAssertions
 
-    res.status(200).json(resPage);
+    const resElementResults = []
+    for (const dbElementResult of dbElementResults) {
+        const resElementResult = {}
+        resElementResult.elements = dbElementResult.elements
+        resElementResult.verdict = dbElementResult.verdict
+        // assertion?
+        resElementResults.push(resElementResult)
+    }
+    
+    const response = {
+        page: resPage,
+        elementResults: resElementResults
+    }
+
+    res.status(200).json(response);
 });

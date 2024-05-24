@@ -16,36 +16,6 @@ export class PageEvaluationComponent {
   page!: Page;
   assertions!: QWAssertion[];
 
-  mockElem1: AffectedElement = {
-    verdict: "passed",
-    elements: ['<a href=\"/w/index.php?title=End-to-end_encryption&amp;action=edit&amp;section=11\" title=\"Edit section: References\">edit</a>', 'elem2'],
-  }
-  mockElem2: AffectedElement = {
-    verdict: "warning",
-    elements: ['elem2', 'elem3'],
-  }
-  mockRules: QWAssertion[] = [
-    {
-      code: 'rule1',
-      outcome: 'Passed',
-      description: 'Description for rule1',
-      levels: ['A'],
-      elementsAffected: [this.mockElem1,this.mockElem2],
-      module: 'act',
-      page: this.page
-
-    },
-    {
-      code: 'rule2',
-      outcome: 'Failed',
-      description: 'Description for rule2',
-      levels: ['AA', 'AAA'],
-      elementsAffected: [this.mockElem1],
-      module: 'wcag',
-      page: this.page
-    }
-  ];
-
   passedPercentage!: number;
   warningPercentage!: number;
   failedPercentage!: number;
