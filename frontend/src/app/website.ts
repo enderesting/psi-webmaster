@@ -63,13 +63,3 @@ export interface AffectedElement{
     verdict : string;
     elements: string[];
 }
-
-/*export interface PageReport{
-    pageURL : string;
-    totalTests?: number;
-    totalPassed?: number;
-    totalWarning?: number;
-    totalFailed?: number;
-    totalNotApplicable?: number;
-    assertions : QWAssertion;
-}*/
