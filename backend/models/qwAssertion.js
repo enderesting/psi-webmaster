@@ -34,10 +34,6 @@ const QWAssertionSchema = new Schema({
        type: String,
        required: true
    },
-
-   //  elementsAffected: {
-   //      type: [String],
-   //  }
 });
 
 module.exports = {

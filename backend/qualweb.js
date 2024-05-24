@@ -81,24 +81,43 @@ parseEARLModule = (module, moduleName) => {
         }
 
         if (rule.results != null) {
-            for (const resultObj of rule.results) {
-                const cleanResultObj = {
-                    verdict: resultObj.verdict,
-                    elements: []
-                }
-                
-                for (const elementObj of resultObj.elements) {
-                    cleanResultObj.elements.push(elementObj.htmlCode)
-                }
-
-                parsedRule.results.push(cleanResultObj)
-            }
+            const parsedResults = parseAssertionResults(rule.results)
+            parsedRule.results = parsedResults
         }
         
         parsed.push(parsedRule);
     }
-
     return parsed;
+}
+
+parseAssertionResults = (results) => {
+    unaggregatedResults = []
+    for (const resultObj of results) {
+        const resultVerdict = resultObj.verdict
+        const resultElements = []
+
+        for (const elementObj of resultObj.elements) {
+            resultElements.push(elementObj.htmlCode)
+        }
+        
+        unaggregatedResults.push({verdict: resultVerdict, elements: resultElements})
+    }
+
+    aggregatedObj = {}
+    for (result of unaggregatedResults) {
+        if (aggregatedObj[result.verdict] == null) {
+            aggregatedObj[result.verdict] = result.elements
+        } else {
+            aggregatedObj[result.verdict] = aggregatedObj[result.verdict].concat(result.elements)
+        }
+    }
+
+    parsedResults = []
+    for (const verdict in aggregatedObj) {
+        parsedResults.push({verdict: verdict, elements: aggregatedObj[verdict]})
+    }
+
+    return parsedResults
 }
 
 exports.commonNErrors = (n, assertions) => {

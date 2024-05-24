@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const Website = require('../models/website');
 const Page = require('../models/page');
 const QWAssertion = require('../models/qwAssertion').qwAssertionModel
+const ElementResults = require('../models/elementResults')
 const qw = require('../qualweb');
 
 exports.getWebsite = asyncHandler(async (req, res, next) => {
@@ -180,6 +181,14 @@ exports.requestRating = asyncHandler(async (req, res, next) => {
 async function handlePageAssertions(fullUrl, urlAssertions, timestamp) {
     // Delete previous assertions for this page
     const dbPage = await Page.findOne({ pageURL: fullUrl }).exec(); 
+    const dbAssertions = await QWAssertion.find({ page: dbPage._id}).exec();
+
+    for (const dbAssertion in dbAssertions) {
+        await ElementResults.deleteMany({ 
+            assertion: dbAssertions[dbAssertion]._id 
+        }).exec();
+    }
+
     await QWAssertion.deleteMany({ page: dbPage._id }).exec();
 
     let anyFailed = false;
@@ -205,6 +214,7 @@ async function handlePageAssertions(fullUrl, urlAssertions, timestamp) {
         return;
     }
 
+    let c = 0;
     // Add the new assertions
     const assertions = urlAssertions[fullUrl].rules;
     for (const assertion of assertions) {
@@ -225,6 +235,17 @@ async function handlePageAssertions(fullUrl, urlAssertions, timestamp) {
         }
 
         await qwAssertion.save();
+
+        // Save elements for this assertion
+        for (const result of assertion.results) {
+            const elementResults = ElementResults({
+                verdict: result.verdict,
+                elements: result.elements,
+                assertion: qwAssertion._id
+            })
+            
+            // await elementResults.save();
+        }
 
         if (assertion.outcome == "failed") {
             totalFailed++
