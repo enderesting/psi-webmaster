@@ -1,11 +1,11 @@
 const asyncHandler = require('express-async-handler');
 const Page = require('../models/page');
 const QWAssertion = require('../models/qwAssertion').qwAssertionModel
+const ElementResults = require('../models/elementResults')
 
 exports.getPage = asyncHandler(async (req, res, next) => {
     const dbPage = await Page.findOne({ _id: req.params.id }).exec();
     const dbQWAssertions = await QWAssertion.find({page: req.params.id}).exec()
-    const dbElementResults = await ElementResults.find({assertion: dbQWAssertions._id}).exec();
 
     const resQWAssertions = []
     for (const dbQWAssertion of dbQWAssertions) {
@@ -16,6 +16,11 @@ exports.getPage = asyncHandler(async (req, res, next) => {
         resQWAssertion.levels = dbQWAssertion.levels
         resQWAssertion.description = dbQWAssertion.description
         
+        const dbElementResults = await ElementResults
+            .find({assertion: dbQWAssertion._id})
+        
+        resQWAssertion.elementsAffected = dbElementResults
+
         resQWAssertions.push(resQWAssertion)
     }
 
@@ -27,20 +32,6 @@ exports.getPage = asyncHandler(async (req, res, next) => {
     resPage.totalFailed = dbPage.totalFailed
     resPage.totalNotApplicable = dbPage.totalNotApplicable
     resPage.assertions = resQWAssertions
-
-    const resElementResults = []
-    for (const dbElementResult of dbElementResults) {
-        const resElementResult = {}
-        resElementResult.elements = dbElementResult.elements
-        resElementResult.verdict = dbElementResult.verdict
-        // assertion?
-        resElementResults.push(resElementResult)
-    }
-    
-    const response = {
-        page: resPage,
-        elementResults: resElementResults
-    }
-
-    res.status(200).json(response);
+    // console.log(resPage);
+    res.status(200).json(resPage);
 });

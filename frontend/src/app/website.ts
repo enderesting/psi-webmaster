@@ -56,12 +56,12 @@ export interface QWAssertion {
     levels: string[];
     page: Page;
     description: string;
+    elementsAffected: AffectedElement[]
 }
 
 export interface AffectedElement{
     verdict : string;
     elements: string[];
-    assertion: QWAssertion;
 }
 
 /*export interface PageReport{
