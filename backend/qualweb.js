@@ -67,9 +67,11 @@ parseEARLModule = (module, moduleName) => {
         const rule = module[ruleName];
         const parsedRule = {
             module: moduleName,
+            description: rule.name,
             code: rule.code,
             outcome: rule.metadata.outcome,
-            levels: []
+            levels: [],
+            results: []
         }
 
         if (rule.metadata["success-criteria"] != null) {
@@ -77,11 +79,45 @@ parseEARLModule = (module, moduleName) => {
                 parsedRule.levels.push(criteria.level)
             }
         }
+
+        if (rule.results != null) {
+            const parsedResults = parseAssertionResults(rule.results)
+            parsedRule.results = parsedResults
+        }
         
         parsed.push(parsedRule);
     }
-
     return parsed;
+}
+
+parseAssertionResults = (results) => {
+    unaggregatedResults = []
+    for (const resultObj of results) {
+        const resultVerdict = resultObj.verdict
+        const resultElements = []
+
+        for (const elementObj of resultObj.elements) {
+            resultElements.push(elementObj.htmlCode)
+        }
+        
+        unaggregatedResults.push({verdict: resultVerdict, elements: resultElements})
+    }
+
+    aggregatedObj = {}
+    for (result of unaggregatedResults) {
+        if (aggregatedObj[result.verdict] == null) {
+            aggregatedObj[result.verdict] = result.elements
+        } else {
+            aggregatedObj[result.verdict] = aggregatedObj[result.verdict].concat(result.elements)
+        }
+    }
+
+    parsedResults = []
+    for (const verdict in aggregatedObj) {
+        parsedResults.push({verdict: verdict, elements: aggregatedObj[verdict]})
+    }
+
+    return parsedResults
 }
 
 exports.commonNErrors = (n, assertions) => {

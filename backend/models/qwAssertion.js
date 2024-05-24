@@ -28,7 +28,15 @@ const QWAssertionSchema = new Schema({
         type: Schema.ObjectId,
         ref: "Page",
         required: true
-    }
+    },
+
+   description: {
+       type: String,
+       required: true
+   },
 });
 
-module.exports = mongoose.model("QWAssertion", QWAssertionSchema)
+module.exports = {
+    qwAssertionModel: mongoose.model("QWAssertion", QWAssertionSchema),
+    qwAssertionSchema: QWAssertionSchema
+}
