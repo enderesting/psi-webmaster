@@ -117,16 +117,31 @@ export class WebsiteAnalysisComponent {
 
 
   public openPDF(): void {
+    const margin = 10; // 10mm margin on all sides
     let DATA: any = document.getElementById('htmlData');
     html2canvas(DATA).then((canvas) => {
-      let fileWidth = 208;
-      let fileHeight = (canvas.height * fileWidth) / canvas.width;
+      // let fileWidth = 208;
+      // let fileHeight = (canvas.height * fileWidth) / canvas.width;
+      // const FILEURI = canvas.toDataURL('image/png');
+      // let PDF = new jsPDF('p', 'mm', 'a4');
+      // let position = 0;     
+      // PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+      // PDF.setTextColor(0,0,0);
+      // // PDF.text(20, 40, 'This is red.');
+      // PDF.save('website-report.pdf');
+
+      let imgWidth = 208 - 2 * margin; // A4 width (210mm) minus left and right margins
+      let imgHeight = (canvas.height * imgWidth) / canvas.width;
+      
       const FILEURI = canvas.toDataURL('image/png');
       let PDF = new jsPDF('p', 'mm', 'a4');
-      let position = 0;     
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-      PDF.setTextColor(0,0,0);
-      // PDF.text(20, 40, 'This is red.');
+      
+      // Center the image within the margins
+      let positionX = margin;
+      let positionY = margin;
+  
+      PDF.addImage(FILEURI, 'PNG', positionX, positionY, imgWidth, imgHeight);
+      PDF.setTextColor(0, 0, 0);
       PDF.save('website-report.pdf');
     });
   }
