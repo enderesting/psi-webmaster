@@ -26,10 +26,13 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDialogModule} from '@angular/material/dialog'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { WebsiteAnalysisComponent } from './website-analysis/website-analysis.component';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { ChartInfoComponent } from './chart-info/chart-info.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { PageEvaluationComponent } from './page-evaluation/page-evaluation.component';
 
 @NgModule({
     declarations: [
@@ -40,6 +43,7 @@ import { DialogComponent } from './dialog/dialog.component';
         WebsiteAnalysisComponent,
         ChartInfoComponent,
         DialogComponent,
+        PageEvaluationComponent,
     ],
     providers: [],
     bootstrap: [AppComponent],
@@ -67,6 +71,8 @@ import { DialogComponent } from './dialog/dialog.component';
         MatTabsModule,
         MatDialogModule,
         MatProgressSpinnerModule,
+        MatSnackBarModule,
+        MatExpansionModule,
         NgApexchartsModule,
     ]
 })
